@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Boodschappen">
+<meta name="theme-color" content="#E9EEF4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0E1622" media="(prefers-color-scheme: dark)">
+<title>Boodschappenlijst</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%B7%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#E9EEF4; --surface:#FFFFFF; --ink:#12233B; --muted:#5A687B; --rule:#D3DBE5; --field:#F3F6F9;
+  --tag:#FFD43B; --tag-ink:#12233B; --up:#B3303D; --focus:#2563EB; --primary:#12233B; --on-primary:#FFFFFF;
+  --backdrop:rgba(18,35,59,.45); --toast-bg:#12233B; --toast-ink:#FFFFFF;
+  --font:"Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --cond:"Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1622; --surface:#16212F; --ink:#E8EEF5; --muted:#98A6B9; --rule:#2A384A; --field:#1D2A3B;
+    --tag:#FFD43B; --tag-ink:#12233B; --up:#F07884; --focus:#7AA7FF; --primary:#E8EEF5; --on-primary:#0E1622;
+    --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1622; --surface:#16212F; --ink:#E8EEF5; --muted:#98A6B9; --rule:#2A384A; --field:#1D2A3B;
+  --tag:#FFD43B; --tag-ink:#12233B; --up:#F07884; --focus:#7AA7FF; --primary:#E8EEF5; --on-primary:#0E1622;
+  --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622;
+  color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:560px;margin:0 auto}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 16px 12px}
+.titlebar{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h1{font-family:var(--cond);font-weight:800;font-size:clamp(22px,6.6vw,31px);line-height:1.05;margin:2px 0 12px;min-width:0}
+.linkbtn{background:none;border:0;padding:6px 0;font-weight:600;font-size:15px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;flex:none}
+.addrow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr) auto;gap:8px}
+.addbtn{width:48px;padding:0;font-size:26px;line-height:1}
+.editgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:10px;margin:4px 0 12px}
+.qtyrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 6px}
+.qtyrow .lbl{margin:0}
+.addrow input{width:100%;min-width:0;font:inherit;font-size:17px;padding:12px 12px;min-height:48px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);color:var(--ink);-webkit-appearance:none;appearance:none}
+.addrow input::placeholder{color:var(--muted)}
+
+main{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+.block{background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:16px}
+.block + .block{margin-top:12px}
+.meta{color:var(--muted);font-size:14px;line-height:1.35}
+
+.sumlead{font-size:15px;color:var(--muted);margin:0}
+.win{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 6px}
+.winname{font-family:var(--cond);font-weight:800;font-size:34px;line-height:1.05;overflow-wrap:anywhere}
+.ranks{margin-top:12px;border-top:1px solid var(--rule)}
+.rank{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:baseline;padding:9px 0;border-bottom:1px solid var(--rule)}
+.rank:last-child{border-bottom:0}
+.rname{font-weight:600}
+.rright{text-align:right;white-space:nowrap}
+.rtotal{font-family:var(--cond);font-weight:700;font-size:21px}
+.diff{color:var(--up);font-size:14px;font-weight:600;margin-left:8px}
+.split{margin:12px 0 0;font-size:15px}
+.more{margin-top:6px}
+
+.tag{position:relative;display:inline-flex;flex:none;background:var(--tag);color:var(--tag-ink);border-radius:5px;padding:4px 10px 3px 21px}
+.tag::before{content:"";position:absolute;left:7px;top:50%;width:7px;height:7px;margin-top:-3.5px;border-radius:50%;background:var(--surface);box-shadow:inset 0 1px 1.5px rgba(0,0,0,.28)}
+.price{display:inline-flex;align-items:flex-start;font-family:var(--cond);font-weight:700;line-height:1;font-variant-numeric:lining-nums tabular-nums}
+.price .cur{font-size:.42em;margin:.2em .14em 0 0}
+.price .c{font-size:.56em;margin:.06em 0 0 .05em;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:2px}
+.price-xl{font-size:40px}
+.price-md{font-size:26px}
+.price-sm{font-size:22px}
+
+.items{background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-top:12px}
+.item{display:flex;align-items:center;border-bottom:1px solid var(--rule)}
+.item:last-child{border-bottom:0}
+.tick{flex:none;display:flex;align-items:center;justify-content:center;width:52px;align-self:stretch;cursor:pointer;position:relative}
+.tick input{position:absolute;opacity:0;width:44px;height:44px;margin:0;cursor:pointer}
+.tick span{width:24px;height:24px;border:2px solid var(--muted);border-radius:50%;display:block}
+.tick input:checked + span{background:var(--primary);border-color:var(--primary);box-shadow:inset 0 0 0 4px var(--surface)}
+.tick input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+.item-main{flex:1;min-width:0;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:13px 16px 13px 0;background:none;border:0;text-align:left;cursor:pointer}
+.itext{display:flex;flex-direction:column;min-width:0}
+.iname{font-weight:600;font-size:17px;line-height:1.3;overflow-wrap:anywhere}
+.item.done .iname{text-decoration:line-through;color:var(--muted)}
+.item.done .price{color:var(--muted)}
+.clear{display:block;margin:10px 16px 0}
+
+.empty h2{font-family:var(--cond);font-weight:700;font-size:25px;margin:0 0 6px}
+.empty p{margin:0 0 14px;color:var(--muted);max-width:44ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-block;padding:8px 13px;border:1px solid var(--rule);border-radius:999px;background:var(--field);font-size:15px;line-height:1.2;cursor:pointer}
+.chipcheck{position:relative;cursor:pointer}
+.chipcheck input{position:absolute;opacity:0;pointer-events:none}
+.chipcheck span{display:inline-block;padding:8px 13px;border:1px solid var(--rule);border-radius:999px;background:var(--field);font-size:15px;line-height:1.2}
+.chipcheck input:checked + span{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
+.chipcheck input:focus-visible + span{outline:3px solid var(--focus);outline-offset:2px}
+
+.status{color:var(--muted);font-size:14px;padding:14px 16px 0;margin:0}
+.loading p{color:var(--muted);margin:12px 0 0}
+.pulse{height:6px;border-radius:3px;background:var(--rule);overflow:hidden;position:relative}
+.pulse::after{content:"";position:absolute;inset:0 auto 0 0;width:35%;background:var(--tag);border-radius:3px;animation:slide 1.3s ease-in-out infinite}
+@keyframes slide{from{transform:translateX(-100%)}to{transform:translateX(300%)}}
+.err{color:var(--up);font-weight:600;margin:0 0 12px}
+
+.btn{min-height:48px;padding:12px 16px;border-radius:10px;border:1.5px solid var(--primary);background:var(--primary);color:var(--on-primary);font-weight:600;font-size:16px;cursor:pointer}
+.btn.secondary{background:transparent;color:var(--ink)}
+.btn.text{background:none;border:0;color:var(--up);padding:12px 0;min-height:44px}
+
+dialog.sheet{border:0;padding:0;margin:auto auto 0;width:100%;max-width:560px;max-height:92vh;max-height:92dvh;border-radius:16px 16px 0 0;background:var(--surface);color:var(--ink);overflow:hidden}
+dialog.sheet::backdrop{background:var(--backdrop)}
+dialog.sheet[open]{animation:sheetup .22s ease-out}
+@keyframes sheetup{from{transform:translateY(28px);opacity:.6}to{transform:none;opacity:1}}
+.sheet-inner{max-height:92vh;max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px calc(22px + env(safe-area-inset-bottom,0px))}
+.sheet-head{position:sticky;top:0;z-index:2;background:var(--surface);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 0 8px}
+.sheet-head h2{font-family:var(--cond);font-weight:800;font-size:28px;line-height:1.1;margin:0;overflow-wrap:anywhere}
+.close{flex:none;background:none;border:0;color:var(--muted);font-weight:600;font-size:15px;padding:6px 0 6px 8px;cursor:pointer}
+.note{color:var(--muted);font-size:14px;margin:10px 0 4px;max-width:54ch}
+.hint{color:var(--muted);font-size:14px;margin:10px 0 0}
+
+.editrow{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end;margin:4px 0 6px}
+.lbl{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+.txt{width:100%;font:inherit;font-size:17px;padding:11px 12px;min-height:46px;border:1px solid var(--rule);border-radius:10px;background:var(--field);color:var(--ink);-webkit-appearance:none;appearance:none}
+.qty{display:flex;align-items:center;border:1px solid var(--rule);border-radius:10px;background:var(--field);min-height:46px}
+.qty button{width:44px;height:44px;background:none;border:0;font-size:22px;font-weight:600;cursor:pointer}
+.qty output{min-width:28px;text-align:center;font-weight:600;font-size:17px}
+
+.srow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;width:100%;padding:13px 0;background:none;border:0;border-bottom:1px solid var(--rule);text-align:left;cursor:pointer}
+.sname{font-weight:600;font-size:17px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.pname{font-size:15px;line-height:1.3;overflow-wrap:anywhere}
+.right{display:flex;flex-direction:column;align-items:flex-end;text-align:right}
+.badge{font-size:12px;font-weight:600;line-height:1;padding:3px 6px;border-radius:4px;border:1px solid currentColor;color:var(--muted)}
+.badge.warn{color:var(--up)}
+.extlink{display:inline-block;margin:6px 0 4px;font-size:15px;font-weight:600;text-underline-offset:3px}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:20;background:var(--toast-bg);color:var(--toast-ink);padding:10px 16px;border-radius:999px;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (min-width:600px){
+  main{padding-left:16px;padding-right:16px}
+  .block,.items{border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+}
+@media (prefers-reduced-motion: reduce){
+  dialog.sheet[open]{animation:none}
+  .pulse::after{animation:none;width:100%}
+  .toast{transition:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="titlebar"><h1>Boodschappenlijst</h1><button class="linkbtn" id="storesBtn">Winkels</button></div>
+    <div class="addrow">
+      <input id="newBrand" type="text" placeholder="Merk" list="brandList" autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-label="Merk, optioneel">
+      <input id="newItem" type="text" placeholder="Product" autocomplete="off" enterkeyhint="done" aria-label="Product">
+      <button class="btn addbtn" id="addBtn" aria-label="Toevoegen aan lijst">+</button>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="summary" aria-live="polite"></section>
+  <section id="items"></section>
+  <p class="status" id="status"></p>
+</main>
+
+<datalist id="brandList"></datalist>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<dialog id="sheet" class="sheet" aria-labelledby="sheetTitle">
+  <div class="sheet-inner" id="sheetInner"></div>
+</dialog>
+
+<dialog id="storesSheet" class="sheet" aria-labelledby="storesTitle">
+  <div class="sheet-inner">
+    <div class="sheet-head"><h2 id="storesTitle">Winkels</h2><button class="close" data-close>Sluiten</button></div>
+    <p class="note">Kies maximaal vier supermarkten om te vergelijken.</p>
+    <div class="chips" id="storeChips"></div>
+    <p class="note" id="lidlNote" hidden>De prijzen van Lidl komen via boodschaapje.nl en zijn minder volledig dan die van de andere winkels.</p>
+    <p class="note" id="dataNote"></p>
+    <button class="btn secondary" id="refreshBtn">Prijzen nu vernieuwen</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+
+const DATA_URL="https://raw.githubusercontent.com/supermarkt/checkjebon/main/data/supermarkets.json";
+const COMMITS_URL="https://api.github.com/repos/supermarkt/checkjebon/commits?path=data/supermarkets.json&per_page=1";
+const CACHE_NAME="checkjebon-data";
+const LS_LIST="boodschappenlijst.v1", LS_META="boodschappenlijst.meta.v1";
+const MAX_AGE=6*3600*1000;
+const STORE_NAMES={ah:"Albert Heijn",aldi:"Aldi",coop:"Coop",dekamarkt:"DekaMarkt",dirk:"Dirk",ekoplaza:"Ekoplaza",hoogvliet:"Hoogvliet",janlinders:"Jan Linders",jumbo:"Jumbo",lidl:"Lidl",picnic:"Picnic",plus:"Plus",poiesz:"Poiesz",spar:"Spar",vomar:"Vomar"};
+const EXAMPLES=[["","halfvolle melk 1 l"],["Calvé","pindakaas"],["","bananen"],["","scharreleieren 10 stuks"]];
+const DEFAULT_STORES=["ah","jumbo","lidl","plus"];
+const MAX_STORES=4;
+const UNIT_WORDS=new Set(["kg","kilo","kilogram","g","gr","gram","grams","ml","milliliter","milliliters","mililiter","cl","centiliter","l","liter","liters","ltr","st","stk","stuk","stuks","x"]);
+
+const $=(s,el)=>(el||document).querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const eurFmt=new Intl.NumberFormat("nl-NL",{style:"currency",currency:"EUR"});
+const fmt=n=>eurFmt.format(n);
+const numFmt=new Intl.NumberFormat("nl-NL",{maximumFractionDigits:2});
+function norm(s){
+  let t=String(s||"").toLowerCase();
+  if(/[^\x00-\x7f]/.test(t)) t=t.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  return t.replace(/[^a-z0-9]+/g," ").trim();
+}
+function readJSON(k){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){ return null; } }
+function writeJSON(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+
+/* ---------- state ---------- */
+let data=null, status="loading", loadedBytes=0, refreshing=false;
+let meta=readJSON(LS_META)||{};
+let list=readJSON(LS_LIST)||{};
+list.items=Array.isArray(list.items)?list.items.filter(i=>i&&typeof i.q==="string"&&i.q.trim()).map(i=>({id:i.id||rid(),b:typeof i.b==="string"?i.b:"",q:i.q,qty:Math.max(1,Math.min(99,parseInt(i.qty,10)||1)),done:!!i.done,pins:i.pins&&typeof i.pins==="object"?i.pins:{}})):[];
+list.on=Array.isArray(list.on)&&list.on.length?list.on.slice(0,MAX_STORES):DEFAULT_STORES.slice();
+delete list.off;
+const fullQ=it=>(it.b?it.b+" ":"")+it.q;
+const label=it=>fullQ(it);
+const saveList=()=>writeJSON(LS_LIST,list);
+const saveMeta=()=>writeJSON(LS_META,meta);
+const matchCache=new Map(), pinCache=new Map();
+let showAll=false, sheetView=null, pickFilter="";
+
+/* ---------- sizes and prices ---------- */
+const SIZE_RE=/(\d+(?:[.,]\d+)?)\s*(kilogram|kilo|kg|grams?|gr|g|milliliters?|mililiters?|ml|centiliters?|cl|liters?|ltr|l|stuks?|stk|st)(?![a-z])/;
+function parseSize(s){
+  if(!s) return null;
+  let t=String(s).toLowerCase(), mult=1;
+  const mm=t.match(/(\d+)\s*x\s*(?=\d)/);
+  if(mm){ mult=parseInt(mm[1],10)||1; t=t.slice(0,mm.index)+" "+t.slice(mm.index+mm[0].length); }
+  const m=t.match(SIZE_RE); if(!m) return null;
+  let v=parseFloat(m[1].replace(",",".")); const u=m[2]; let b,f;
+  if(/^(kilogram|kilo|kg)$/.test(u)){b="kg";f=1;}
+  else if(/^(grams?|gr|g)$/.test(u)){b="kg";f=.001;}
+  else if(/^(milliliters?|mililiters?|ml)$/.test(u)){b="l";f=.001;}
+  else if(/^(centiliters?|cl)$/.test(u)){b="l";f=.01;}
+  else if(/^(liters?|ltr|l)$/.test(u)){b="l";f=1;}
+  else {b="st";f=1;}
+  v=v*f*mult;
+  return v>0&&v<1000?{v,b}:null;
+}
+function szOf(pr){ if(pr.sz===undefined) pr.sz=parseSize(pr.s)||parseSize(pr.n); return pr.sz; }
+function fmtSize(sz){
+  if(!sz) return "";
+  if(sz.b==="kg") return sz.v<1?Math.round(sz.v*1000)+" gram":numFmt.format(sz.v)+" kilo";
+  if(sz.b==="l") return sz.v<1?Math.round(sz.v*1000)+" ml":numFmt.format(sz.v)+" liter";
+  return numFmt.format(sz.v)+(sz.v===1?" stuk":" stuks");
+}
+const perLabel=b=>b==="kg"?"per kilo":b==="l"?"per liter":"per stuk";
+function priceHTML(n,cls){
+  const cents=Math.round(n*100), e=Math.floor(cents/100), c=String(cents%100).padStart(2,"0");
+  return '<span class="sr">'+esc(fmt(n))+'</span><span class="price '+cls+'" aria-hidden="true"><span class="cur">€</span><span class="e">'+e+'</span><span class="c">'+c+'</span></span>';
+}
+const pk=pr=>pr.l||(pr.n+"|"+pr.s);
+
+/* ---------- matching ---------- */
+function parseQuery(q){
+  const size=parseSize(q);
+  let tokens=norm(q).split(" ").filter(Boolean);
+  if(size) tokens=tokens.filter(t=>!/^\d/.test(t)&&!UNIT_WORDS.has(t));
+  return {tokens,size};
+}
+function relevance(k,tokens,phrase){
+  let rel=1;
+  for(const t of tokens){
+    let i=k.indexOf(t); if(i<0) return -1;
+    let good=false;
+    while(i>-1){
+      const end=i+t.length;
+      if(end===k.length||k.charCodeAt(end)===32){ good=true; break; }
+      i=k.indexOf(t,i+1);
+    }
+    if(!good) rel=2;
+  }
+  if(rel===1&&(k+" ").indexOf(phrase+" ")>-1) rel=0;
+  return rel;
+}
+function extraWords(k,n){
+  let c=0; for(const w of k.split(" ")) if(w&&!/^\d/.test(w)&&!UNIT_WORDS.has(w)) c++;
+  return Math.max(0,c-n);
+}
+function classify(c,m){
+  const sz=c.sz;
+  if(!sz) return 2;
+  if(!m.base||sz.b!==m.base) return 3;
+  const r=sz.v/m.med;
+  if(m.size){ if(r>=0.9&&r<=1.15) return 0; if(r>=0.9&&r<=2) return 1; return 3; }
+  if(Math.abs(r-1)<=0.15) return 0;
+  if(r>=0.5&&r<=2) return 1;
+  return 3;
+}
+function rankCmp(a,b){
+  if(a.pu!==b.pu) return a.pu-b.pu;
+  const ga=a.cls<=1?0:a.cls-1, gb=b.cls<=1?0:b.cls-1;
+  if(ga!==gb) return ga-gb;
+  if(a.rel!==b.rel) return a.rel-b.rel;
+  if(a.cls!==b.cls) return a.cls-b.cls;
+  if(a.cls===1&&a.up!=null&&b.up!=null&&a.up!==b.up) return a.up-b.up;
+  if(a.cls===3&&a.dist!==b.dist) return a.dist-b.dist;
+  return a.pr.p-b.pr.p;
+}
+function makeCand(pr,m,rel,pu){
+  const sz=szOf(pr);
+  const c={pr,sz,up:sz?pr.p/sz.v:null,rel:rel==null?1:rel,pu:pu||0};
+  c.cls=classify(c,m);
+  c.dist=sz&&m.base&&sz.b===m.base?Math.abs(Math.log(sz.v/m.med)):99;
+  return c;
+}
+function matchItem(q){
+  const key=norm(q);
+  if(matchCache.has(key)) return matchCache.get(key);
+  const pq=parseQuery(q);
+  const m={tokens:pq.tokens,size:pq.size,base:null,med:null,perStore:new Map()};
+  if(data&&pq.tokens.length){
+    const raw=new Map(), phrase=pq.tokens.join(" "); let anyGood=false;
+    for(const st of data){
+      const found=[];
+      for(const pr of st.products){ const r=relevance(pr.k,pq.tokens,phrase); if(r>-1){ found.push({pr,rel:r,pu:extraWords(pr.k,pq.tokens.length)>3?1:0}); if(r<2) anyGood=true; } }
+      raw.set(st.id,found);
+    }
+    let counts={}, sizes={}; const pc={}, ps={}; let pureSized=0;
+    for(const [id,found] of raw){
+      const keep=anyGood?found.filter(f=>f.rel<2):found;
+      raw.set(id,keep);
+      for(const f of keep){ const sz=szOf(f.pr); if(sz){ counts[sz.b]=(counts[sz.b]||0)+1; (sizes[sz.b]=sizes[sz.b]||[]).push(sz.v); if(!f.pu){ pureSized++; pc[sz.b]=(pc[sz.b]||0)+1; (ps[sz.b]=ps[sz.b]||[]).push(sz.v); } } }
+    }
+    if(pureSized>=3){ counts=pc; sizes=ps; }
+    if(pq.size){ m.base=pq.size.b; m.med=pq.size.v; }
+    else{
+      let best=null; for(const b in counts) if(!best||counts[b]>counts[best]) best=b;
+      if(best){ const arr=sizes[best].sort((a,b)=>a-b); m.base=best; m.med=arr[Math.floor(arr.length/2)]; }
+    }
+    for(const [id,found] of raw){ const cands=found.map(f=>makeCand(f.pr,m,f.rel,f.pu)); cands.sort(rankCmp); m.perStore.set(id,cands); }
+  }
+  matchCache.set(key,m);
+  return m;
+}
+function chosen(it,st,m){
+  const cands=m.perStore.get(st.id)||[];
+  const pin=it.pins&&it.pins[st.id];
+  if(pin){
+    let c=cands.find(x=>pk(x.pr)===pin);
+    if(!c){
+      const ck=st.id+"\u0000"+pin;
+      let pr=pinCache.get(ck);
+      if(pr===undefined){ pr=st.products.find(p=>pk(p)===pin)||null; pinCache.set(ck,pr); }
+      if(pr) c=makeCand(pr,m);
+    }
+    if(c) return Object.assign({},c,{pinned:true});
+  }
+  return cands[0]||null;
+}
+function activeStores(){
+  if(!data) return [];
+  let a=data.filter(s=>list.on.indexOf(s.id)>-1);
+  if(!a.length){ a=data.slice(0,MAX_STORES); list.on=a.map(s=>s.id); saveList(); }
+  return a;
+}
+const storeById=id=>data&&data.find(s=>s.id===id);
+function compute(){
+  const stores=activeStores();
+  const rows=list.items.map(it=>{
+    const m=matchItem(fullQ(it)), per=new Map();
+    for(const st of stores){ const c=chosen(it,st,m); if(c) per.set(st.id,c); }
+    const all=[...per.entries()], good=all.filter(e=>(e[1].cls<=2&&!e[1].pu)||e[1].pinned), pool=good.length?good:all;
+    let best=null,bestId=null;
+    for(const [id,c] of pool) if(!best||c.pr.p<best.pr.p){ best=c; bestId=id; }
+    return {it,m,per,best,bestId};
+  });
+  const totals=stores.map(st=>{ let total=0,found=0; for(const r of rows){ const c=r.per.get(st.id); if(c){ total+=c.pr.p*r.it.qty; found++; } } return {st,total,found}; })
+    .filter(t=>t.found>0).sort((a,b)=>b.found-a.found||a.total-b.total);
+  let split=0,splitFound=0; for(const r of rows) if(r.best){ split+=r.best.pr.p*r.it.qty; splitFound++; }
+  return {rows,totals,split,splitFound,n:rows.length,stores};
+}
+
+/* ---------- rendering ---------- */
+function fmtWhen(ts){
+  const d=new Date(ts), t=new Date();
+  const time=d.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
+  if(d.toDateString()===t.toDateString()) return "vandaag om "+time;
+  const y=new Date(t); y.setDate(t.getDate()-1);
+  if(d.toDateString()===y.toDateString()) return "gisteren om "+time;
+  return d.toLocaleDateString("nl-NL",{day:"numeric",month:"long"})+" om "+time;
+}
+function renderSummary(C){
+  const el=$("#summary");
+  if(status==="loading"){
+    el.innerHTML='<div class="block loading"><div class="pulse" aria-hidden="true"></div><p id="loadText"></p></div>';
+    updateLoadText(); return;
+  }
+  if(status==="error"){
+    el.innerHTML='<div class="block"><p class="err">De prijzen konden niet worden geladen. Controleer je internetverbinding.</p><button class="btn secondary" id="retryBtn">Opnieuw proberen</button></div>';
+    return;
+  }
+  if(!list.items.length){
+    el.innerHTML='<div class="block empty"><h2>Je lijst is leeg</h2><p>Vul hierboven het merk en het product in. Laat het merk leeg als je gewoon de goedkoopste variant wilt. Hoe specifieker het product, hoe beter de vergelijking: “halfvolle melk 1 l” werkt beter dan “melk”.</p><div class="chips">'+EXAMPLES.map(x=>'<button class="chip" data-eb="'+esc(x[0])+'" data-eq="'+esc(x[1])+'">'+esc((x[0]?x[0]+" ":"")+x[1])+'</button>').join("")+'</div></div>';
+    return;
+  }
+  if(!C.totals.length){ el.innerHTML='<div class="block"><p class="meta">Geen van je producten is gevonden bij de gekozen winkels. Probeer andere zoekwoorden.</p></div>'; return; }
+  const w=C.totals[0], n=C.n;
+  const foundTxt=w.found===n?(n===1?"Je product is gevonden.":"Alle "+n+" producten gevonden."):w.found+" van de "+n+" producten gevonden. Wat ontbreekt, telt niet mee.";
+  const others=C.totals.slice(1), shown=showAll?others:others.slice(0,4);
+  let html='<div class="block"><p class="sumlead">Goedkoopste winkel voor je lijst</p><div class="win"><span class="winname">'+esc(w.st.name)+'</span><span class="tag">'+priceHTML(w.total,"price-xl")+'</span></div><p class="meta">'+esc(foundTxt)+'</p>';
+  if(shown.length){
+    html+='<div class="ranks">'+shown.map(t=>{
+      const missing=n-t.found;
+      const extra=t.found===w.found?'<span class="diff">+ '+esc(fmt(t.total-w.total))+'</span>':'<span class="meta"> mist '+missing+'</span>';
+      return '<div class="rank"><span class="rname">'+esc(t.st.name)+'</span><span class="rright"><span class="rtotal">'+esc(fmt(t.total))+'</span>'+extra+'</span></div>';
+    }).join("")+'</div>';
+    if(others.length>4) html+='<button class="linkbtn more" id="moreBtn">'+(showAll?"Minder winkels tonen":"Alle "+(others.length+1)+" winkels tonen")+'</button>';
+  }
+  if(C.stores.length>1&&C.splitFound===w.found&&w.total-C.split>=0.01){
+    html+='<p class="split">Haal je elk product bij de goedkoopste winkel, dan betaal je '+esc(fmt(C.split))+'. Dat is '+esc(fmt(w.total-C.split))+' minder.</p>';
+  }
+  el.innerHTML=html+'</div>';
+}
+function updateLoadText(){
+  const p=$("#loadText"); if(!p) return;
+  const mb=loadedBytes>0?" ("+numFmt.format(Math.round(loadedBytes/1e5)/10)+" MB)":"";
+  p.textContent="Prijzen van Checkjebon laden"+mb+". Dit duurt alleen de eerste keer wat langer, daarna staan ze op je telefoon.";
+}
+function itemRowHTML(r){
+  const it=r.it, qty=it.qty>1?it.qty+"× ":"";
+  let meta, price="";
+  if(status==="loading") meta="Prijzen laden…";
+  else if(status==="error") meta="";
+  else if(!r.best) meta=it.b?"Niet gevonden. Tik om het merk of product aan te passen.":"Niet gevonden. Tik om het product aan te passen.";
+  else{
+    const st=storeById(r.bestId), sz=fmtSize(r.best.sz);
+    meta="Goedkoopst bij "+esc(st?st.name:"")+": "+esc(r.best.pr.n)+(sz?", "+esc(sz):"");
+    price=priceHTML(r.best.pr.p*it.qty,"price-md");
+  }
+  return '<div class="item'+(it.done?" done":"")+'"><label class="tick"><input type="checkbox" data-done="'+esc(it.id)+'"'+(it.done?" checked":"")+' aria-label="'+esc(label(it))+' afvinken"><span aria-hidden="true"></span></label>'
+    +'<button class="item-main" data-open="'+esc(it.id)+'"><span class="itext"><span class="iname">'+esc(qty+label(it))+'</span>'+(meta?'<span class="meta">'+meta+'</span>':'')+'</span><span>'+price+'</span></button></div>';
+}
+function renderItems(C){
+  const el=$("#items");
+  if(!list.items.length){ el.innerHTML=""; return; }
+  let html='<div class="items">'+C.rows.map(itemRowHTML).join("")+'</div>';
+  if(list.items.some(i=>i.done)) html+='<button class="btn text clear" id="clearDone">Afgevinkte producten verwijderen</button>';
+  el.innerHTML=html;
+}
+function renderStatus(){
+  const el=$("#status");
+  if(status!=="ready"){ el.textContent=""; return; }
+  el.textContent=meta.updatedAt?"Prijzen van Checkjebon.nl, bijgewerkt "+fmtWhen(meta.updatedAt)+".":meta.fetchedAt?"Prijzen van Checkjebon.nl, opgehaald "+fmtWhen(meta.fetchedAt)+".":"Prijzen van Checkjebon.nl.";
+}
+function render(){
+  const C=status==="ready"?compute():{rows:list.items.map(it=>({it})),totals:[],n:list.items.length,stores:[]};
+  renderSummary(C); renderItems(C); renderStatus(); renderBrands();
+  if(els.sheet.open) renderSheet();
+  if(els.storesSheet.open) renderStoresSheet();
+}
+
+/* ---------- item sheet ---------- */
+const els={sheet:$("#sheet"),sheetInner:$("#sheetInner"),storesSheet:$("#storesSheet"),newItem:$("#newItem"),newBrand:$("#newBrand"),toast:$("#toast")};
+function showDialog(d){ if(d.open) return; if(typeof d.showModal==="function") d.showModal(); else d.setAttribute("open",""); }
+function closeDialog(d){ if(!d.open) return; if(typeof d.close==="function") d.close(); else d.removeAttribute("open"); }
+document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{ if(e.target===d||e.target.closest("[data-close]")) closeDialog(d); }));
+els.sheet.addEventListener("close",()=>{ sheetView=null; pickFilter=""; });
+
+function findItem(id){ return list.items.find(i=>i.id===id); }
+function openItem(id){ sheetView={type:"item",id}; renderSheet(); showDialog(els.sheet); }
+function renderSheet(){
+  if(!sheetView) return;
+  const it=findItem(sheetView.id);
+  if(!it||!data){ closeDialog(els.sheet); return; }
+  if(sheetView.type==="pick") renderPicker(it,sheetView.store); else renderItemSheet(it);
+}
+function renderItemSheet(it){
+  const m=matchItem(fullQ(it)), stores=activeStores();
+  const per=stores.map(st=>({st,c:chosen(it,st,m)}));
+  const found=per.filter(x=>x.c).sort((a,b)=>a.c.pr.p-b.c.pr.p), missing=per.filter(x=>!x.c).map(x=>x.st.name);
+  let note="";
+  if(m.size&&m.base) note="Vergeleken op verpakkingen vanaf "+fmtSize({v:m.size.v,b:m.size.b})+".";
+  else if(m.base&&m.med) note="Vergeleken op verpakkingen van rond de "+fmtSize({v:m.med,b:m.base})+". Zet de inhoud erbij, zoals “500 g”, als je een andere maat wilt.";
+  let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(label(it))+'</h2><button class="close" data-close>Sluiten</button></div>'
+    +'<div class="editgrid"><div><label class="lbl" for="itemBrand">Merk</label><input id="itemBrand" class="txt" value="'+esc(it.b)+'" placeholder="Elk merk" list="brandList" autocomplete="off" autocapitalize="words" enterkeyhint="next"></div>'
+    +'<div><label class="lbl" for="itemName">Product</label><input id="itemName" class="txt" value="'+esc(it.q)+'" autocomplete="off" enterkeyhint="done"></div></div>'
+    +'<div class="qtyrow"><span class="lbl" id="qtyLbl">Aantal</span><div class="qty" role="group" aria-labelledby="qtyLbl"><button id="qtyMin" aria-label="Minder">−</button><output id="qtyOut">'+it.qty+'</output><button id="qtyPlus" aria-label="Meer">+</button></div></div>';
+  if(note) html+='<p class="note">'+esc(note)+'</p>';
+  if(!found.length) html+='<p class="note">Bij geen van de gekozen winkels gevonden. Probeer een andere of kortere omschrijving.</p>';
+  html+=found.map((x,i)=>{
+    const c=x.c, sz=fmtSize(c.sz), bits=[];
+    if(sz) bits.push(sz);
+    if(c.up!=null&&c.sz) bits.push(fmt(c.up)+" "+perLabel(c.sz.b));
+    const badges=(c.pinned?'<span class="badge">Door jou gekozen</span>':'')+(!c.pinned&&c.cls===3?'<span class="badge warn">Andere verpakking</span>':'');
+    const d=c.pr.p-found[0].c.pr.p;
+    const right=i===0?'<span class="tag">'+priceHTML(c.pr.p,"price-md")+'</span>':priceHTML(c.pr.p,"price-md")+(d<0.005?'<span class="meta" style="margin-top:4px">Even duur</span>':'<span class="diff" style="margin:4px 0 0">+ '+esc(fmt(d))+'</span>');
+    return '<button class="srow" data-pick="'+esc(x.st.id)+'"><span><span class="sname">'+esc(x.st.name)+badges+'</span><span class="pname">'+esc(c.pr.n)+'</span>'+(bits.length?'<span class="meta" style="display:block">'+esc(bits.join(", "))+'</span>':'')+'</span><span class="right">'+right+'</span></button>';
+  }).join("");
+  if(missing.length) html+='<p class="note">Niet gevonden bij '+esc(joinNl(missing))+'.</p>';
+  if(found.length) html+='<p class="hint">Tik op een winkel om een ander product te kiezen.</p>';
+  html+='<button class="btn text" id="removeItem">Verwijderen van lijst</button>';
+  els.sheetInner.innerHTML=html;
+}
+function joinNl(a){ return a.length<2?a.join(""):a.slice(0,-1).join(", ")+" en "+a[a.length-1]; }
+function renderPicker(it,storeId){
+  const st=storeById(storeId); if(!st){ sheetView={type:"item",id:it.id}; renderItemSheet(it); return; }
+  const m=matchItem(fullQ(it)), cur=chosen(it,st,m);
+  let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(st.name)+'</h2><button class="close" id="backBtn">Terug</button></div>'
+    +'<p class="note">Kies welk product je bij '+esc(st.name)+' wilt vergelijken voor “'+esc(label(it))+'”.</p>';
+  if(cur&&st.url&&cur.pr.l) html+='<a class="extlink" href="'+esc(st.url+cur.pr.l)+'" target="_blank" rel="noopener">Bekijk het gekozen product op de site</a>';
+  if(cur&&cur.pinned) html+='<div><button class="linkbtn" id="unpin">Weer automatisch kiezen</button></div>';
+  html+='<div style="margin:10px 0 4px"><input id="pickFilter" class="txt" type="search" placeholder="Zoek bij '+esc(st.name)+'" value="'+esc(pickFilter)+'" autocomplete="off" aria-label="Zoek bij '+esc(st.name)+'"></div><div id="pickList"></div>';
+  els.sheetInner.innerHTML=html;
+  renderPickList();
+}
+function renderPickList(){
+  const box=$("#pickList"); if(!box||!sheetView) return;
+  const it=findItem(sheetView.id), st=storeById(sheetView.store); if(!it||!st) return;
+  const m=matchItem(fullQ(it)), cur=chosen(it,st,m), curKey=cur?pk(cur.pr):null;
+  let cands;
+  const f=norm(pickFilter);
+  if(f){
+    const toks=f.split(" ");
+    cands=st.products.filter(p=>toks.every(t=>p.k.indexOf(t)>-1)).slice(0,400).map(p=>makeCand(p,m)).sort((a,b)=>a.pr.p-b.pr.p);
+  } else cands=(m.perStore.get(st.id)||[]).slice();
+  cands=cands.slice(0,60);
+  if(!cands.length){ box.innerHTML='<p class="note">Geen producten gevonden. Probeer een ander zoekwoord.</p>'; return; }
+  box.innerHTML=cands.map(c=>{
+    const sz=fmtSize(c.sz), bits=[]; if(sz) bits.push(sz); if(c.up!=null&&c.sz) bits.push(fmt(c.up)+" "+perLabel(c.sz.b));
+    const isCur=pk(c.pr)===curKey;
+    return '<button class="srow" data-choose="'+esc(pk(c.pr))+'" aria-pressed="'+isCur+'"><span><span class="pname" style="font-weight:'+(isCur?600:400)+'">'+esc(c.pr.n)+'</span>'+(bits.length||isCur?'<span class="meta" style="display:block">'+esc(bits.join(", "))+(isCur?(bits.length?", ":"")+"gekozen":"")+'</span>':'')+'</span><span class="right">'+priceHTML(c.pr.p,"price-sm")+'</span></button>';
+  }).join("");
+}
+els.sheetInner.addEventListener("click",e=>{
+  if(!sheetView) return;
+  const it=findItem(sheetView.id); if(!it) return;
+  const t=e.target;
+  if(t.closest("#qtyMin")||t.closest("#qtyPlus")){
+    it.qty=Math.max(1,Math.min(99,it.qty+(t.closest("#qtyPlus")?1:-1))); saveList(); render(); return;
+  }
+  if(t.closest("#removeItem")){ list.items=list.items.filter(i=>i.id!==it.id); saveList(); closeDialog(els.sheet); render(); toast("“"+label(it)+"” verwijderd"); return; }
+  const pick=t.closest("[data-pick]");
+  if(pick){ commitName(); sheetView={type:"pick",id:it.id,store:pick.dataset.pick}; pickFilter=""; renderSheet(); els.sheetInner.scrollTop=0; return; }
+  if(t.closest("#backBtn")){ sheetView={type:"item",id:it.id}; pickFilter=""; renderSheet(); els.sheetInner.scrollTop=0; return; }
+  if(t.closest("#unpin")){ delete it.pins[sheetView.store]; saveList(); sheetView={type:"item",id:it.id}; render(); toast("Wordt weer automatisch gekozen"); return; }
+  const ch=t.closest("[data-choose]");
+  if(ch){ it.pins[sheetView.store]=ch.dataset.choose; saveList(); sheetView={type:"item",id:it.id}; pickFilter=""; render(); els.sheetInner.scrollTop=0; toast("Product gekozen"); return; }
+});
+els.sheetInner.addEventListener("input",e=>{ if(e.target.id==="pickFilter"){ pickFilter=e.target.value; renderPickList(); } });
+els.sheetInner.addEventListener("change",e=>{ if(e.target.id==="itemName"||e.target.id==="itemBrand") commitName(); });
+els.sheetInner.addEventListener("keydown",e=>{
+  if(e.key!=="Enter") return;
+  if(e.target.id==="itemBrand"){ e.preventDefault(); const n=$("#itemName"); if(n) n.focus(); }
+  else if(e.target.id==="itemName"){ e.preventDefault(); e.target.blur(); commitName(); }
+});
+function commitName(){
+  const inp=$("#itemName"), bi=$("#itemBrand"); if(!inp||!sheetView) return;
+  const it=findItem(sheetView.id); if(!it) return;
+  const v=inp.value.trim().replace(/\s+/g," "), b=bi?bi.value.trim().replace(/\s+/g," "):it.b;
+  if(!v){ inp.value=it.q; return; }
+  if(v===it.q&&b===it.b) return;
+  it.q=v; it.b=b; it.pins={}; saveList(); render();
+}
+
+/* ---------- stores sheet ---------- */
+function renderStoresSheet(){
+  const box=$("#storeChips");
+  if(!data){ box.innerHTML='<p class="meta">De winkels verschijnen zodra de prijzen geladen zijn.</p>'; }
+  else box.innerHTML=data.map(s=>'<label class="chipcheck"><input type="checkbox" value="'+esc(s.id)+'"'+(list.on.indexOf(s.id)>-1?" checked":"")+'><span>'+esc(s.name)+'</span></label>').join("");
+  $("#lidlNote").hidden=!(data&&data.some(s=>s.id==="lidl"));
+  $("#dataNote").textContent=refreshing?"Prijzen worden vernieuwd…":meta.fetchedAt?"Prijzen opgehaald "+fmtWhen(meta.fetchedAt)+(meta.updatedAt?", door Checkjebon bijgewerkt "+fmtWhen(meta.updatedAt):"")+". De app haalt ze automatisch opnieuw op als ze ouder zijn dan zes uur.":"";
+  $("#refreshBtn").disabled=refreshing;
+}
+$("#storeChips").addEventListener("change",e=>{
+  const id=e.target.value; if(!id) return;
+  if(e.target.checked){
+    if(list.on.length>=MAX_STORES){ e.target.checked=false; toast("Je kunt maximaal vier winkels kiezen. Zet er eerst een uit."); return; }
+    if(list.on.indexOf(id)<0) list.on.push(id);
+  } else {
+    if(list.on.length<=1){ e.target.checked=true; toast("Kies minstens één winkel"); return; }
+    list.on=list.on.filter(x=>x!==id);
+  }
+  saveList(); render();
+});
+$("#storesBtn").addEventListener("click",()=>{ renderStoresSheet(); showDialog(els.storesSheet); });
+$("#refreshBtn").addEventListener("click",()=>{ fetchFresh(!data,true); });
+
+/* ---------- main events ---------- */
+function addItem(b,q){
+  b=String(b||"").trim().replace(/\s+/g," "); q=String(q||"").trim().replace(/\s+/g," ");
+  if(!q) return false;
+  const key=norm((b?b+" ":"")+q);
+  const ex=list.items.find(i=>norm(fullQ(i))===key);
+  if(ex){ ex.qty=Math.min(99,ex.qty+1); ex.done=false; toast("Aantal verhoogd naar "+ex.qty); }
+  else list.items.unshift({id:rid(),b,q,qty:1,done:false,pins:{}});
+  saveList(); render(); return true;
+}
+function addFromInputs(){
+  if(!els.newItem.value.trim()){ toast(els.newBrand.value.trim()?"Vul ook het product in":"Vul een product in"); els.newItem.focus(); return; }
+  addItem(els.newBrand.value,els.newItem.value);
+  els.newBrand.value=""; els.newItem.value=""; els.newBrand.focus();
+}
+function renderBrands(){
+  const seen=new Map(); for(const i of list.items) if(i.b) seen.set(norm(i.b),i.b);
+  $("#brandList").innerHTML=[...seen.values()].map(b=>'<option value="'+esc(b)+'"></option>').join("");
+}
+$("#addBtn").addEventListener("click",addFromInputs);
+els.newBrand.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); els.newItem.focus(); } });
+els.newItem.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); addFromInputs(); } });
+$("#summary").addEventListener("click",e=>{
+  const ex=e.target.closest("[data-eq]"); if(ex){ addItem(ex.dataset.eb,ex.dataset.eq); return; }
+  if(e.target.closest("#moreBtn")){ showAll=!showAll; render(); return; }
+  if(e.target.closest("#retryBtn")){ fetchFresh(true,false); }
+});
+$("#items").addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]"); if(o){ openItem(o.dataset.open); return; }
+  if(e.target.closest("#clearDone")){ const n=list.items.filter(i=>i.done).length; list.items=list.items.filter(i=>!i.done); saveList(); render(); toast(n===1?"1 product verwijderd":n+" producten verwijderd"); }
+});
+$("#items").addEventListener("change",e=>{
+  const id=e.target.dataset.done; if(!id) return;
+  const it=findItem(id); if(it){ it.done=e.target.checked; saveList(); render(); }
+});
+
+let toastT;
+function toast(msg){ els.toast.textContent=msg; els.toast.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>els.toast.classList.remove("show"),2600); }
+
+/* ---------- loading data ---------- */
+function ingest(json){
+  if(!Array.isArray(json)) throw new Error("Onverwacht formaat");
+  const stores=[];
+  for(const s of json){
+    if(!s||!Array.isArray(s.d)||!s.d.length) continue;
+    const id=String(s.n||"").toLowerCase(); if(!id) continue;
+    const products=[];
+    for(const x of s.d){ const p=Number(x.p); if(!x||!x.n||!(p>0)) continue; products.push({n:String(x.n),k:norm(x.n),p,s:x.s?String(x.s):"",l:x.l?String(x.l):""}); }
+    if(products.length) stores.push({id,name:STORE_NAMES[id]||String(s.c||id).replace(/\s*\(.*\)$/,""),url:typeof s.u==="string"?s.u:"",products});
+  }
+  if(!stores.length) throw new Error("Geen winkels");
+  stores.sort((a,b)=>a.name.localeCompare(b.name,"nl"));
+  data=stores; status="ready"; matchCache.clear(); pinCache.clear();
+}
+async function readWithProgress(res){
+  if(!res.body||!res.body.getReader) return res.text();
+  const reader=res.body.getReader(), chunks=[]; let last=0;
+  for(;;){
+    const {done,value}=await reader.read(); if(done) break;
+    chunks.push(value); loadedBytes+=value.length;
+    if(loadedBytes-last>300000){ last=loadedBytes; updateLoadText(); }
+  }
+  const all=new Uint8Array(loadedBytes); let off=0; for(const c of chunks){ all.set(c,off); off+=c.length; }
+  return new TextDecoder("utf-8").decode(all);
+}
+async function fetchUpdatedAt(){
+  try{
+    const r=await fetch(COMMITS_URL,{headers:{Accept:"application/vnd.github+json"}});
+    if(!r.ok) return;
+    const j=await r.json(); const d=j&&j[0]&&j[0].commit&&(j[0].commit.committer||j[0].commit.author);
+    const ts=d&&Date.parse(d.date); if(ts){ meta.updatedAt=ts; saveMeta(); renderStatus(); if(els.storesSheet.open) renderStoresSheet(); }
+  }catch(e){}
+}
+async function fetchFresh(foreground,manual){
+  if(refreshing) return;
+  refreshing=true; loadedBytes=0;
+  if(foreground){ status="loading"; render(); }
+  if(els.storesSheet.open) renderStoresSheet();
+  try{
+    const res=await fetch(DATA_URL,{cache:"no-cache"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const text=await readWithProgress(res);
+    ingest(JSON.parse(text));
+    meta.fetchedAt=Date.now(); saveMeta();
+    if("caches" in window){ try{ const c=await caches.open(CACHE_NAME); await c.put(DATA_URL,new Response(text,{headers:{"content-type":"application/json"}})); }catch(e){} }
+    refreshing=false; render();
+    fetchUpdatedAt();
+    if(!foreground||manual) toast("Prijzen bijgewerkt");
+  }catch(e){
+    refreshing=false;
+    if(!data){ status="error"; render(); }
+    else{ status="ready"; render(); if(manual) toast("Vernieuwen is niet gelukt. Je ziet de laatst opgehaalde prijzen."); }
+  }
+}
+async function loadData(){
+  render();
+  let ok=false;
+  if("caches" in window){
+    try{
+      const c=await caches.open(CACHE_NAME), r=await c.match(DATA_URL);
+      if(r){ ingest(JSON.parse(await r.text())); ok=true; render(); }
+    }catch(e){ ok=false; }
+  }
+  if(!ok) await fetchFresh(true,false);
+  else if(Date.now()-(meta.fetchedAt||0)>MAX_AGE) fetchFresh(false,false);
+}
+loadData();
+})();
+</script>
+</body>
+</html>
