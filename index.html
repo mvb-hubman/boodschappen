@@ -17,7 +17,7 @@
 :root{
   --bg:#E9EEF4; --surface:#FFFFFF; --ink:#12233B; --muted:#5A687B; --rule:#D3DBE5; --field:#F3F6F9;
   --tag:#FFD43B; --tag-ink:#12233B; --up:#B3303D; --focus:#2563EB; --primary:#12233B; --on-primary:#FFFFFF;
-  --backdrop:rgba(18,35,59,.45); --toast-bg:#12233B; --toast-ink:#FFFFFF;
+  --backdrop:rgba(18,35,59,.45); --toast-bg:#12233B; --toast-ink:#FFFFFF; --down:#1E7A4C;
   --font:"Barlow", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   --cond:"Barlow Condensed", "Arial Narrow", "Roboto Condensed", system-ui, sans-serif;
   color-scheme:light;
@@ -29,14 +29,14 @@
   :root:not([data-theme="light"]){
     --bg:#0E1622; --surface:#16212F; --ink:#E8EEF5; --muted:#98A6B9; --rule:#2A384A; --field:#1D2A3B;
     --tag:#FFD43B; --tag-ink:#12233B; --up:#F07884; --focus:#7AA7FF; --primary:#E8EEF5; --on-primary:#0E1622;
-    --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622;
+    --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622; --down:#5CC98D;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0E1622; --surface:#16212F; --ink:#E8EEF5; --muted:#98A6B9; --rule:#2A384A; --field:#1D2A3B;
   --tag:#FFD43B; --tag-ink:#12233B; --up:#F07884; --focus:#7AA7FF; --primary:#E8EEF5; --on-primary:#0E1622;
-  --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622;
+  --backdrop:rgba(0,0,0,.6); --toast-bg:#E8EEF5; --toast-ink:#0E1622; --down:#5CC98D;
   color-scheme:dark;
 }
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -51,8 +51,8 @@ a{color:inherit}
 
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:12px 16px 12px}
 .titlebar{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-h1{font-family:var(--cond);font-weight:800;font-size:clamp(22px,6.6vw,31px);line-height:1.05;margin:2px 0 12px;min-width:0}
-.linkbtn{background:none;border:0;padding:6px 0;font-weight:600;font-size:15px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;flex:none}
+h1{font-family:var(--cond);font-weight:800;font-size:clamp(21px,5.8vw,31px);line-height:1.05;margin:2px 0 12px;min-width:0}
+.linkbtn{background:none;border:0;padding:6px 0;font-weight:600;font-size:14px;color:var(--ink);text-decoration:underline;text-underline-offset:3px;cursor:pointer;flex:none}
 .addrow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr) auto;gap:8px}
 .addbtn{width:48px;padding:0;font-size:26px;line-height:1}
 .editgrid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);gap:10px;margin:4px 0 12px}
@@ -61,7 +61,8 @@ h1{font-family:var(--cond);font-weight:800;font-size:clamp(22px,6.6vw,31px);line
 .addrow input{width:100%;min-width:0;font:inherit;font-size:17px;padding:12px 12px;min-height:48px;border:1px solid var(--rule);border-radius:10px;background:var(--surface);color:var(--ink);-webkit-appearance:none;appearance:none}
 .addrow input::placeholder{color:var(--muted)}
 
-main{padding-bottom:calc(32px + env(safe-area-inset-bottom,0px))}
+main{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body.hassel main{padding-bottom:calc(250px + env(safe-area-inset-bottom,0px))}
 .block{background:var(--surface);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:16px}
 .block + .block{margin-top:12px}
 .meta{color:var(--muted);font-size:14px;line-height:1.35}
@@ -130,7 +131,7 @@ dialog.sheet[open]{animation:sheetup .22s ease-out}
 @keyframes sheetup{from{transform:translateY(28px);opacity:.6}to{transform:none;opacity:1}}
 .sheet-inner{max-height:92vh;max-height:92dvh;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 16px calc(22px + env(safe-area-inset-bottom,0px))}
 .sheet-head{position:sticky;top:0;z-index:2;background:var(--surface);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:16px 0 8px}
-.sheet-head h2{font-family:var(--cond);font-weight:800;font-size:28px;line-height:1.1;margin:0;overflow-wrap:anywhere}
+.sheet-head h2{font-family:var(--cond);font-weight:800;font-size:clamp(22px,6.4vw,28px);line-height:1.1;margin:0;overflow-wrap:break-word;hyphens:auto;-webkit-hyphens:auto;min-width:0}
 .close{flex:none;background:none;border:0;color:var(--muted);font-weight:600;font-size:15px;padding:6px 0 6px 8px;cursor:pointer}
 .note{color:var(--muted);font-size:14px;margin:10px 0 4px;max-width:54ch}
 .hint{color:var(--muted);font-size:14px;margin:10px 0 0}
@@ -150,7 +151,7 @@ dialog.sheet[open]{animation:sheetup .22s ease-out}
 .badge.warn{color:var(--up)}
 .extlink{display:inline-block;margin:6px 0 4px;font-size:15px;font-weight:600;text-underline-offset:3px}
 
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:20;background:var(--toast-bg);color:var(--toast-ink);padding:10px 16px;border-radius:999px;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;max-width:calc(100% - 32px);text-align:center}
+.toast{position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom,0px));transform:translate(-50%,10px);z-index:20;background:var(--toast-bg);color:var(--toast-ink);padding:10px 16px;border-radius:999px;font-size:15px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .18s,transform .18s;max-width:calc(100% - 32px);text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media (min-width:600px){
@@ -162,43 +163,91 @@ dialog.sheet[open]{animation:sheetup .22s ease-out}
   .pulse::after{animation:none;width:100%}
   .toast{transition:none}
 }
+
+body.hassel .toast{bottom:calc(230px + env(safe-area-inset-bottom,0px))}
+.addrow.two{grid-template-columns:1fr auto}
+.btn.wide{width:100%}
+.actions .btn{flex:1}
+.chg{display:block;font-size:14px;font-weight:600;line-height:1.35}
+.chg.down{color:var(--down)}
+.chg.upc{color:var(--up)}
+.meta.warn{color:var(--up);font-weight:600}
+.srow.static{cursor:default}
+.srow[disabled]{cursor:default;opacity:.6}
+.sheet-inner h3{font-family:var(--cond);font-weight:700;font-size:21px;margin:22px 0 4px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:7;background:var(--surface);border-top:1px solid var(--rule);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs .wrap{display:flex}
+.tabs button{flex:1;min-height:56px;background:none;border:0;font-weight:600;font-size:15px;color:var(--muted);cursor:pointer;position:relative;padding:0 4px}
+.tabs button[aria-current="page"]{color:var(--ink)}
+.tabs button[aria-current="page"]::before{content:"";position:absolute;top:0;left:22%;right:22%;height:3px;border-radius:0 0 3px 3px;background:var(--ink)}
+.selbar{position:fixed;left:0;right:0;bottom:calc(57px + env(safe-area-inset-bottom,0px));z-index:6;background:var(--surface);border-top:1px solid var(--rule);box-shadow:0 -6px 18px rgba(18,35,59,.12);padding:12px 16px}
+.selbar .actions{margin-top:10px}
+.sel1{margin:0 0 2px;font-weight:600}
+.suggest{margin-top:8px;background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden}
+.sug{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;padding:12px 14px;background:none;border:0;border-bottom:1px solid var(--rule);text-align:left;font-size:16px;cursor:pointer}
+.sug:last-child{border-bottom:0}
+.pair{margin-top:14px;padding-top:12px;border-top:1px solid var(--rule)}
+.pgroup{margin-top:12px}
+.pgroup h4{margin:0 0 4px;font-size:16px;display:flex;justify-content:space-between;gap:12px}
+.pline{display:flex;justify-content:space-between;gap:12px;font-size:15px;padding:3px 0;color:var(--ink)}
+.pline span:last-child{white-space:nowrap}
+.restore{margin-top:12px;padding:12px;border:1px solid var(--rule);border-radius:10px;background:var(--field)}
+.restore p{margin:0}
+.contents{margin:8px 0 0;font-size:15px}
+.contents div{padding:3px 0}
 </style>
 </head>
 <body>
 <header class="top">
   <div class="wrap">
-    <div class="titlebar"><h1>Boodschappenlijst</h1><button class="linkbtn" id="storesBtn">Winkels</button></div>
-    <div class="addrow">
-      <input id="newBrand" type="text" placeholder="Merk" list="brandList" autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-label="Merk, optioneel">
-      <input id="newItem" type="text" placeholder="Product" autocomplete="off" enterkeyhint="done" aria-label="Product">
-      <button class="btn addbtn" id="addBtn" aria-label="Toevoegen aan lijst">+</button>
+    <div class="titlebar"><h1 id="viewTitle">Boodschappenlijst</h1><button class="linkbtn" id="settingsBtn">Instellingen</button></div>
+    <div id="ctlList">
+      <div class="addrow">
+        <input id="newBrand" type="text" placeholder="Merk" list="brandList" autocomplete="off" autocapitalize="words" enterkeyhint="next" aria-label="Merk, optioneel">
+        <input id="newItem" type="text" placeholder="Product" autocomplete="off" enterkeyhint="done" aria-label="Product">
+        <button class="btn addbtn" id="addBtn" aria-label="Toevoegen aan lijst">+</button>
+      </div>
+      <div class="suggest" id="suggest" hidden></div>
+    </div>
+    <div id="ctlLabels" hidden>
+      <div class="addrow two">
+        <input id="labelSearch" type="search" placeholder="Zoek in mijn producten" autocomplete="off" aria-label="Zoek in mijn producten">
+        <button class="btn" id="newLabelBtn">Nieuw</button>
+      </div>
+    </div>
+    <div id="ctlSaved" hidden>
+      <button class="btn wide" id="saveListBtn">Huidige lijst bewaren</button>
     </div>
   </div>
 </header>
 
 <main class="wrap">
-  <section id="summary" aria-live="polite"></section>
-  <section id="items"></section>
-  <p class="status" id="status"></p>
+  <div id="viewList">
+    <section id="summary" aria-live="polite"></section>
+    <section id="items"></section>
+    <p class="status" id="status"></p>
+  </div>
+  <div id="viewLabels" hidden></div>
+  <div id="viewSaved" hidden></div>
 </main>
 
+<div class="selbar" id="selBar" hidden></div>
+<nav class="tabs" aria-label="Onderdelen">
+  <div class="wrap">
+    <button data-view="list" aria-current="page">Lijst</button>
+    <button data-view="labels">Producten</button>
+    <button data-view="saved">Vaste lijsten</button>
+  </div>
+</nav>
+
 <datalist id="brandList"></datalist>
+<input type="file" id="restoreFile" accept="application/json,.json" hidden>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<dialog id="sheet" class="sheet" aria-labelledby="sheetTitle">
-  <div class="sheet-inner" id="sheetInner"></div>
-</dialog>
-
-<dialog id="storesSheet" class="sheet" aria-labelledby="storesTitle">
-  <div class="sheet-inner">
-    <div class="sheet-head"><h2 id="storesTitle">Winkels</h2><button class="close" data-close>Sluiten</button></div>
-    <p class="note">Kies maximaal vier supermarkten om te vergelijken.</p>
-    <div class="chips" id="storeChips"></div>
-    <p class="note" id="lidlNote" hidden>De prijzen van Lidl komen via boodschaapje.nl en zijn minder volledig dan die van de andere winkels.</p>
-    <p class="note" id="dataNote"></p>
-    <button class="btn secondary" id="refreshBtn">Prijzen nu vernieuwen</button>
-  </div>
-</dialog>
+<dialog id="sheet" class="sheet" aria-labelledby="sheetTitle"><div class="sheet-inner" id="sheetInner"></div></dialog>
+<dialog id="labelSheet" class="sheet" aria-labelledby="labelTitle"><div class="sheet-inner" id="labelInner"></div></dialog>
+<dialog id="savedSheet" class="sheet" aria-labelledby="savedTitle"><div class="sheet-inner" id="savedInner"></div></dialog>
+<dialog id="settingsSheet" class="sheet" aria-labelledby="settingsTitle"><div class="sheet-inner" id="settingsInner"></div></dialog>
 
 <script>
 (function(){
@@ -207,8 +256,8 @@ dialog.sheet[open]{animation:sheetup .22s ease-out}
 const DATA_URL="https://raw.githubusercontent.com/supermarkt/checkjebon/main/data/supermarkets.json";
 const COMMITS_URL="https://api.github.com/repos/supermarkt/checkjebon/commits?path=data/supermarkets.json&per_page=1";
 const CACHE_NAME="checkjebon-data";
-const LS_LIST="boodschappenlijst.v1", LS_META="boodschappenlijst.meta.v1";
-const MAX_AGE=6*3600*1000;
+const LS={list:"boodschappenlijst.v1",meta:"boodschappenlijst.meta.v1",labels:"boodschappenlijst.labels.v1",saved:"boodschappenlijst.saved.v1",prices:"boodschappenlijst.prices.v1"};
+const MAX_AGE=6*3600*1000, CHANGE_MS=14*864e5, PRUNE_MS=120*864e5;
 const STORE_NAMES={ah:"Albert Heijn",aldi:"Aldi",coop:"Coop",dekamarkt:"DekaMarkt",dirk:"Dirk",ekoplaza:"Ekoplaza",hoogvliet:"Hoogvliet",janlinders:"Jan Linders",jumbo:"Jumbo",lidl:"Lidl",picnic:"Picnic",plus:"Plus",poiesz:"Poiesz",spar:"Spar",vomar:"Vomar"};
 const EXAMPLES=[["","halfvolle melk 1 l"],["Calvé","pindakaas"],["","bananen"],["","scharreleieren 10 stuks"]];
 const DEFAULT_STORES=["ah","jumbo","lidl","plus"];
@@ -228,20 +277,47 @@ function norm(s){
 function readJSON(k){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):null; }catch(e){ return null; } }
 function writeJSON(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
 const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36);
+const clean1=s=>String(s||"").trim().replace(/\s+/g," ");
+function today(){ const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
 
 /* ---------- state ---------- */
+function cleanItem(i){
+  if(!i||typeof i!=="object") return null;
+  const base={id:typeof i.id==="string"&&i.id?i.id:rid(),qty:Math.max(1,Math.min(99,parseInt(i.qty,10)||1)),done:!!i.done};
+  if(typeof i.lab==="string"&&i.lab) return Object.assign(base,{lab:i.lab,q:typeof i.q==="string"?i.q:""});
+  if(typeof i.q!=="string"||!i.q.trim()) return null;
+  const pins={}; if(i.pins&&typeof i.pins==="object") for(const k in i.pins) if(typeof i.pins[k]==="string") pins[k]=i.pins[k];
+  return Object.assign(base,{b:typeof i.b==="string"?i.b:"",q:i.q,pins});
+}
+function cleanLabel(l){
+  if(!l||typeof l.name!=="string"||!l.name.trim()) return null;
+  const picks={}; if(l.picks&&typeof l.picks==="object") for(const k in l.picks) if(typeof l.picks[k]==="string"&&l.picks[k]) picks[k]=l.picks[k];
+  return {id:typeof l.id==="string"&&l.id?l.id:rid(),name:clean1(l.name),picks};
+}
+function cleanSaved(s){
+  if(!s||typeof s.name!=="string"||!Array.isArray(s.items)) return null;
+  return {id:typeof s.id==="string"&&s.id?s.id:rid(),name:clean1(s.name)||"Lijst",items:s.items.map(cleanItem).filter(Boolean),at:Number(s.at)||Date.now()};
+}
 let data=null, status="loading", loadedBytes=0, refreshing=false;
-let meta=readJSON(LS_META)||{};
-let list=readJSON(LS_LIST)||{};
-list.items=Array.isArray(list.items)?list.items.filter(i=>i&&typeof i.q==="string"&&i.q.trim()).map(i=>({id:i.id||rid(),b:typeof i.b==="string"?i.b:"",q:i.q,qty:Math.max(1,Math.min(99,parseInt(i.qty,10)||1)),done:!!i.done,pins:i.pins&&typeof i.pins==="object"?i.pins:{}})):[];
-list.on=Array.isArray(list.on)&&list.on.length?list.on.slice(0,MAX_STORES):DEFAULT_STORES.slice();
-delete list.off;
+let meta=readJSON(LS.meta)||{};
+let list=readJSON(LS.list)||{};
+list={items:(Array.isArray(list.items)?list.items:[]).map(cleanItem).filter(Boolean),on:Array.isArray(list.on)&&list.on.length?list.on.slice(0,MAX_STORES):DEFAULT_STORES.slice()};
+let labels=(Array.isArray(readJSON(LS.labels))?readJSON(LS.labels):[]).map(cleanLabel).filter(Boolean);
+let saved=(Array.isArray(readJSON(LS.saved))?readJSON(LS.saved):[]).map(cleanSaved).filter(Boolean);
+let pm=readJSON(LS.prices); if(!pm||typeof pm!=="object") pm={};
+const saveList=()=>writeJSON(LS.list,list);
+const saveMeta=()=>writeJSON(LS.meta,meta);
+const saveLabels=()=>writeJSON(LS.labels,labels);
+const saveSaved=()=>writeJSON(LS.saved,saved);
+const savePM=()=>writeJSON(LS.prices,pm);
+const matchCache=new Map();
+let view="list", showAll=false, showPair=false, sheetView=null, pickFilter="", draft=null, savedView=null, pendingRestore=null, labelFilter="";
+const selected=new Set();
+
+const labelById=id=>labels.find(l=>l.id===id)||null;
 const fullQ=it=>(it.b?it.b+" ":"")+it.q;
-const label=it=>fullQ(it);
-const saveList=()=>writeJSON(LS_LIST,list);
-const saveMeta=()=>writeJSON(LS_META,meta);
-const matchCache=new Map(), pinCache=new Map();
-let showAll=false, sheetView=null, pickFilter="";
+function itemName(it){ if(it.lab){ const L=labelById(it.lab); return L?L.name:(it.q||"Onbekend product"); } return fullQ(it); }
+const sortLabels=()=>labels.sort((a,b)=>a.name.localeCompare(b.name,"nl"));
 
 /* ---------- sizes and prices ---------- */
 const SIZE_RE=/(\d+(?:[.,]\d+)?)\s*(kilogram|kilo|kg|grams?|gr|g|milliliters?|mililiters?|ml|centiliters?|cl|liters?|ltr|l|stuks?|stk|st)(?![a-z])/;
@@ -269,11 +345,44 @@ function fmtSize(sz){
   return numFmt.format(sz.v)+(sz.v===1?" stuk":" stuks");
 }
 const perLabel=b=>b==="kg"?"per kilo":b==="l"?"per liter":"per stuk";
+function sizeBits(pr){ const sz=szOf(pr), bits=[]; if(sz){ bits.push(fmtSize(sz)); bits.push(fmt(pr.p/sz.v)+" "+perLabel(sz.b)); } return bits.join(", "); }
 function priceHTML(n,cls){
   const cents=Math.round(n*100), e=Math.floor(cents/100), c=String(cents%100).padStart(2,"0");
   return '<span class="sr">'+esc(fmt(n))+'</span><span class="price '+cls+'" aria-hidden="true"><span class="cur">€</span><span class="e">'+e+'</span><span class="c">'+c+'</span></span>';
 }
 const pk=pr=>pr.l||(pr.n+"|"+pr.s);
+
+/* ---------- price memory ---------- */
+function change(sid,pr){
+  const e=pm[sid+"|"+pk(pr)];
+  if(e&&e.at&&Date.now()-e.at<CHANGE_MS&&typeof e.prev==="number"&&Math.abs(e.prev-pr.p)>=0.005) return {prev:e.prev,down:pr.p<e.prev};
+  return null;
+}
+function chgHTML(sid,pr,storeName){
+  const c=change(sid,pr); if(!c) return "";
+  return '<span class="chg '+(c.down?"down":"upc")+'">'+(c.down?"Gedaald":"Gestegen")+(storeName?" bij "+esc(storeName):"")+', was '+esc(fmt(c.prev))+'</span>';
+}
+function trackKeys(){
+  const keys=new Map();
+  for(const L of labels) for(const sid in L.picks){ const st=storeById(sid); const pr=st&&st.byKey.get(L.picks[sid]); if(pr) keys.set(sid+"|"+pk(pr),pr); }
+  for(const st of activeStores()) for(const it of list.items){ const c=chosenFor(it,st); if(c) keys.set(st.id+"|"+pk(c.pr),c.pr); }
+  return keys;
+}
+function trackPrices(){
+  if(!data) return {down:0,up:0};
+  const now=Date.now(); let down=0, up=0;
+  for(const [k,pr] of trackKeys()){
+    const e=pm[k];
+    if(!e) pm[k]={p:pr.p,s:now};
+    else if(Math.abs(e.p-pr.p)>=0.005){ if(pr.p<e.p) down++; else up++; pm[k]={p:pr.p,prev:e.p,at:now,s:now}; }
+    else e.s=now;
+  }
+  for(const k in pm) if(!pm[k]||now-(pm[k].s||0)>PRUNE_MS) delete pm[k];
+  savePM();
+  return {down,up};
+}
+let trackT;
+function scheduleTrack(){ clearTimeout(trackT); trackT=setTimeout(trackPrices,800); }
 
 /* ---------- matching ---------- */
 function parseQuery(q){
@@ -357,45 +466,61 @@ function matchItem(q){
   matchCache.set(key,m);
   return m;
 }
-function chosen(it,st,m){
-  const cands=m.perStore.get(st.id)||[];
-  const pin=it.pins&&it.pins[st.id];
+function labCand(pr){ const sz=szOf(pr); return {pr,sz,up:sz?pr.p/sz.v:null,cls:0,pu:0,rel:0,pinned:true,lab:true}; }
+function chosenFor(it,st){
+  if(it.lab){
+    const L=labelById(it.lab), key=L&&L.picks[st.id]; if(!key) return null;
+    const pr=st.byKey.get(key); return pr?labCand(pr):null;
+  }
+  const m=matchItem(fullQ(it)), cands=m.perStore.get(st.id)||[], pin=it.pins&&it.pins[st.id];
   if(pin){
     let c=cands.find(x=>pk(x.pr)===pin);
-    if(!c){
-      const ck=st.id+"\u0000"+pin;
-      let pr=pinCache.get(ck);
-      if(pr===undefined){ pr=st.products.find(p=>pk(p)===pin)||null; pinCache.set(ck,pr); }
-      if(pr) c=makeCand(pr,m);
-    }
+    if(!c){ const pr=st.byKey.get(pin); if(pr) c=makeCand(pr,m); }
     if(c) return Object.assign({},c,{pinned:true});
   }
   return cands[0]||null;
 }
+const storeById=id=>data&&data.find(s=>s.id===id)||null;
 function activeStores(){
   if(!data) return [];
   let a=data.filter(s=>list.on.indexOf(s.id)>-1);
   if(!a.length){ a=data.slice(0,MAX_STORES); list.on=a.map(s=>s.id); saveList(); }
   return a;
 }
-const storeById=id=>data&&data.find(s=>s.id===id);
-function compute(){
+function computeFor(items){
   const stores=activeStores();
-  const rows=list.items.map(it=>{
-    const m=matchItem(fullQ(it)), per=new Map();
-    for(const st of stores){ const c=chosen(it,st,m); if(c) per.set(st.id,c); }
+  const rows=items.map(it=>{
+    const per=new Map();
+    for(const st of stores){ const c=chosenFor(it,st); if(c) per.set(st.id,c); }
     const all=[...per.entries()], good=all.filter(e=>(e[1].cls<=2&&!e[1].pu)||e[1].pinned), pool=good.length?good:all;
     let best=null,bestId=null;
     for(const [id,c] of pool) if(!best||c.pr.p<best.pr.p){ best=c; bestId=id; }
-    return {it,m,per,best,bestId};
+    return {it,per,best,bestId};
   });
   const totals=stores.map(st=>{ let total=0,found=0; for(const r of rows){ const c=r.per.get(st.id); if(c){ total+=c.pr.p*r.it.qty; found++; } } return {st,total,found}; })
     .filter(t=>t.found>0).sort((a,b)=>b.found-a.found||a.total-b.total);
-  let split=0,splitFound=0; for(const r of rows) if(r.best){ split+=r.best.pr.p*r.it.qty; splitFound++; }
-  return {rows,totals,split,splitFound,n:rows.length,stores};
+  return {rows,totals,n:rows.length,stores};
+}
+function bestPair(C){
+  const S=C.stores; if(S.length<2||!C.rows.length) return null;
+  let best=null;
+  for(let i=0;i<S.length;i++) for(let j=i+1;j<S.length;j++){
+    const a=S[i].id, b=S[j].id; let total=0,found=0,na=0,nb=0,ta=0,tb=0; const assign=[];
+    for(const r of C.rows){
+      const ca=r.per.get(a), cb=r.per.get(b); let sid=null,c=null;
+      if(ca&&cb){ if(cb.pr.p<ca.pr.p-1e-9){ sid=b; c=cb; } else { sid=a; c=ca; } }
+      else if(ca){ sid=a; c=ca; } else if(cb){ sid=b; c=cb; }
+      if(c){ const v=c.pr.p*r.it.qty; total+=v; found++; if(sid===a){ na++; ta+=v; } else { nb++; tb+=v; } }
+      assign.push({r,sid,c});
+    }
+    const cand={a,b,total,found,na,nb,ta,tb,assign};
+    if(!best||found>best.found||(found===best.found&&total<best.total-1e-9)) best=cand;
+  }
+  if(best&&best.nb>best.na){ [best.a,best.b]=[best.b,best.a]; [best.na,best.nb]=[best.nb,best.na]; [best.ta,best.tb]=[best.tb,best.ta]; }
+  return best;
 }
 
-/* ---------- rendering ---------- */
+/* ---------- shared rendering ---------- */
 function fmtWhen(ts){
   const d=new Date(ts), t=new Date();
   const time=d.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"});
@@ -404,18 +529,54 @@ function fmtWhen(ts){
   if(d.toDateString()===y.toDateString()) return "gisteren om "+time;
   return d.toLocaleDateString("nl-NL",{day:"numeric",month:"long"})+" om "+time;
 }
+function joinNl(a){ return a.length<2?a.join(""):a.slice(0,-1).join(", ")+" en "+a[a.length-1]; }
+const els={sheet:$("#sheet"),sheetInner:$("#sheetInner"),labelSheet:$("#labelSheet"),labelInner:$("#labelInner"),savedSheet:$("#savedSheet"),savedInner:$("#savedInner"),settings:$("#settingsSheet"),settingsInner:$("#settingsInner"),newItem:$("#newItem"),newBrand:$("#newBrand"),toast:$("#toast")};
+function showDialog(d){ if(d.open) return; if(typeof d.showModal==="function") d.showModal(); else d.setAttribute("open",""); }
+function closeDialog(d){ if(!d.open) return; if(typeof d.close==="function") d.close(); else d.removeAttribute("open"); }
+document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{ if(e.target===d||e.target.closest("[data-close]")) closeDialog(d); }));
+els.sheet.addEventListener("close",()=>{ sheetView=null; pickFilter=""; });
+els.labelSheet.addEventListener("close",()=>{ draft=null; });
+els.savedSheet.addEventListener("close",()=>{ savedView=null; });
+els.settings.addEventListener("close",()=>{ pendingRestore=null; });
+function arm(btn,label,text,fn){
+  if(btn.dataset.armed==="1"){ resetArm(btn,label); fn(); return; }
+  btn.dataset.armed="1"; btn.textContent=text||"Tik nogmaals om te verwijderen";
+  clearTimeout(btn._t); btn._t=setTimeout(()=>resetArm(btn,label),4000);
+}
+function resetArm(btn,label){ clearTimeout(btn._t); btn.dataset.armed=""; btn.textContent=label; }
+let toastT;
+function toast(msg){ els.toast.textContent=msg; els.toast.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>els.toast.classList.remove("show"),2800); }
+
+/* ---------- list view ---------- */
+function updateLoadText(){
+  const p=$("#loadText"); if(!p) return;
+  const mb=loadedBytes>0?" ("+numFmt.format(Math.round(loadedBytes/1e5)/10)+" MB)":"";
+  p.textContent="Prijzen van Checkjebon laden"+mb+". Dit duurt alleen de eerste keer wat langer, daarna staan ze op je telefoon.";
+}
+function pairHTML(P,w,n){
+  if(!P||!P.na||!P.nb) return "";
+  const A=storeById(P.a).name, B=storeById(P.b).name;
+  let txt="";
+  if(P.found>w.found) txt="Met "+A+" en "+B+" samen vind je "+(P.found===n?"alle "+n+" producten":P.found+" van de "+n+" producten")+", voor "+fmt(P.total)+".";
+  else if(w.total-P.total>=0.01) txt="Beste combinatie van twee winkels: "+A+" en "+B+" samen voor "+fmt(P.total)+". Dat is "+fmt(w.total-P.total)+" minder dan alles bij "+w.st.name+".";
+  if(!txt) return "";
+  let html='<div class="pair"><p class="split" style="margin-top:0">'+esc(txt)+'</p><button class="linkbtn" id="pairBtn">'+(showPair?"Verberg wat je waar haalt":"Wat haal ik waar?")+'</button>';
+  if(showPair){
+    for(const [sid,name,tot] of [[P.a,A,P.ta],[P.b,B,P.tb]]){
+      const lines=P.assign.filter(x=>x.sid===sid).map(x=>'<div class="pline"><span>'+esc((x.r.it.qty>1?x.r.it.qty+"× ":"")+itemName(x.r.it))+'</span><span>'+esc(fmt(x.c.pr.p*x.r.it.qty))+'</span></div>').join("");
+      html+='<div class="pgroup"><h4><span>Bij '+esc(name)+'</span><span>'+esc(fmt(tot))+'</span></h4>'+lines+'</div>';
+    }
+    const none=P.assign.filter(x=>!x.sid).map(x=>itemName(x.r.it));
+    if(none.length) html+='<p class="meta" style="margin-top:8px">Bij geen van beide: '+esc(joinNl(none))+'.</p>';
+  }
+  return html+'</div>';
+}
 function renderSummary(C){
   const el=$("#summary");
-  if(status==="loading"){
-    el.innerHTML='<div class="block loading"><div class="pulse" aria-hidden="true"></div><p id="loadText"></p></div>';
-    updateLoadText(); return;
-  }
-  if(status==="error"){
-    el.innerHTML='<div class="block"><p class="err">De prijzen konden niet worden geladen. Controleer je internetverbinding.</p><button class="btn secondary" id="retryBtn">Opnieuw proberen</button></div>';
-    return;
-  }
+  if(status==="loading"){ el.innerHTML='<div class="block loading"><div class="pulse" aria-hidden="true"></div><p id="loadText"></p></div>'; updateLoadText(); return; }
+  if(status==="error"){ el.innerHTML='<div class="block"><p class="err">De prijzen konden niet worden geladen. Controleer je internetverbinding.</p><button class="btn secondary" id="retryBtn">Opnieuw proberen</button></div>'; return; }
   if(!list.items.length){
-    el.innerHTML='<div class="block empty"><h2>Je lijst is leeg</h2><p>Vul hierboven het merk en het product in. Laat het merk leeg als je gewoon de goedkoopste variant wilt. Hoe specifieker het product, hoe beter de vergelijking: “halfvolle melk 1 l” werkt beter dan “melk”.</p><div class="chips">'+EXAMPLES.map(x=>'<button class="chip" data-eb="'+esc(x[0])+'" data-eq="'+esc(x[1])+'">'+esc((x[0]?x[0]+" ":"")+x[1])+'</button>').join("")+'</div></div>';
+    el.innerHTML='<div class="block empty"><h2>Je lijst is leeg</h2><p>Vul hierboven het merk en het product in. Laat het merk leeg als je gewoon de goedkoopste variant wilt. Hoe specifieker het product, hoe beter de vergelijking: “halfvolle melk 1 l” werkt beter dan “melk”.'+(labels.length?' Je vaste producten verschijnen als suggestie terwijl je typt.':'')+'</p><div class="chips">'+EXAMPLES.map(x=>'<button class="chip" data-eb="'+esc(x[0])+'" data-eq="'+esc(x[1])+'">'+esc((x[0]?x[0]+" ":"")+x[1])+'</button>').join("")+'</div></div>';
     return;
   }
   if(!C.totals.length){ el.innerHTML='<div class="block"><p class="meta">Geen van je producten is gevonden bij de gekozen winkels. Probeer andere zoekwoorden.</p></div>'; return; }
@@ -425,40 +586,35 @@ function renderSummary(C){
   let html='<div class="block"><p class="sumlead">Goedkoopste winkel voor je lijst</p><div class="win"><span class="winname">'+esc(w.st.name)+'</span><span class="tag">'+priceHTML(w.total,"price-xl")+'</span></div><p class="meta">'+esc(foundTxt)+'</p>';
   if(shown.length){
     html+='<div class="ranks">'+shown.map(t=>{
-      const missing=n-t.found;
-      const extra=t.found===w.found?'<span class="diff">+ '+esc(fmt(t.total-w.total))+'</span>':'<span class="meta"> mist '+missing+'</span>';
+      const extra=t.found===w.found?'<span class="diff">+ '+esc(fmt(t.total-w.total))+'</span>':'<span class="meta"> mist '+(n-t.found)+'</span>';
       return '<div class="rank"><span class="rname">'+esc(t.st.name)+'</span><span class="rright"><span class="rtotal">'+esc(fmt(t.total))+'</span>'+extra+'</span></div>';
     }).join("")+'</div>';
     if(others.length>4) html+='<button class="linkbtn more" id="moreBtn">'+(showAll?"Minder winkels tonen":"Alle "+(others.length+1)+" winkels tonen")+'</button>';
   }
-  if(C.stores.length>1&&C.splitFound===w.found&&w.total-C.split>=0.01){
-    html+='<p class="split">Haal je elk product bij de goedkoopste winkel, dan betaal je '+esc(fmt(C.split))+'. Dat is '+esc(fmt(w.total-C.split))+' minder.</p>';
-  }
+  html+=pairHTML(bestPair(C),w,n);
   el.innerHTML=html+'</div>';
-}
-function updateLoadText(){
-  const p=$("#loadText"); if(!p) return;
-  const mb=loadedBytes>0?" ("+numFmt.format(Math.round(loadedBytes/1e5)/10)+" MB)":"";
-  p.textContent="Prijzen van Checkjebon laden"+mb+". Dit duurt alleen de eerste keer wat langer, daarna staan ze op je telefoon.";
 }
 function itemRowHTML(r){
   const it=r.it, qty=it.qty>1?it.qty+"× ":"";
-  let meta, price="";
+  let meta="", price="", extra="";
   if(status==="loading") meta="Prijzen laden…";
-  else if(status==="error") meta="";
-  else if(!r.best) meta=it.b?"Niet gevonden. Tik om het merk of product aan te passen.":"Niet gevonden. Tik om het product aan te passen.";
-  else{
-    const st=storeById(r.bestId), sz=fmtSize(r.best.sz);
-    meta="Goedkoopst bij "+esc(st?st.name:"")+": "+esc(r.best.pr.n)+(sz?", "+esc(sz):"");
-    price=priceHTML(r.best.pr.p*it.qty,"price-md");
+  else if(status==="ready"){
+    if(!r.best) meta=it.lab?"Bij geen van je winkels gekoppeld. Tik om dit aan te passen.":(it.b?"Niet gevonden. Tik om het merk of product aan te passen.":"Niet gevonden. Tik om het product aan te passen.");
+    else{
+      const st=storeById(r.bestId), sz=fmtSize(r.best.sz);
+      meta="Goedkoopst bij "+esc(st?st.name:"")+": "+esc(r.best.pr.n)+(sz?", "+esc(sz):"");
+      price=priceHTML(r.best.pr.p*it.qty,"price-md");
+      extra=chgHTML(r.bestId,r.best.pr);
+    }
   }
-  return '<div class="item'+(it.done?" done":"")+'"><label class="tick"><input type="checkbox" data-done="'+esc(it.id)+'"'+(it.done?" checked":"")+' aria-label="'+esc(label(it))+' afvinken"><span aria-hidden="true"></span></label>'
-    +'<button class="item-main" data-open="'+esc(it.id)+'"><span class="itext"><span class="iname">'+esc(qty+label(it))+'</span>'+(meta?'<span class="meta">'+meta+'</span>':'')+'</span><span>'+price+'</span></button></div>';
+  return '<div class="item'+(it.done?" done":"")+'"><label class="tick"><input type="checkbox" data-done="'+esc(it.id)+'"'+(it.done?" checked":"")+' aria-label="'+esc(itemName(it))+' afvinken"><span aria-hidden="true"></span></label>'
+    +'<button class="item-main" data-open="'+esc(it.id)+'"><span class="itext"><span class="iname">'+esc(qty+itemName(it))+'</span>'+(meta?'<span class="meta">'+meta+'</span>':'')+extra+'</span><span>'+price+'</span></button></div>';
 }
 function renderItems(C){
   const el=$("#items");
   if(!list.items.length){ el.innerHTML=""; return; }
-  let html='<div class="items">'+C.rows.map(itemRowHTML).join("")+'</div>';
+  const rows=C?C.rows:list.items.map(it=>({it}));
+  let html='<div class="items">'+rows.map(itemRowHTML).join("")+'</div>';
   if(list.items.some(i=>i.done)) html+='<button class="btn text clear" id="clearDone">Afgevinkte producten verwijderen</button>';
   el.innerHTML=html;
 }
@@ -467,99 +623,220 @@ function renderStatus(){
   if(status!=="ready"){ el.textContent=""; return; }
   el.textContent=meta.updatedAt?"Prijzen van Checkjebon.nl, bijgewerkt "+fmtWhen(meta.updatedAt)+".":meta.fetchedAt?"Prijzen van Checkjebon.nl, opgehaald "+fmtWhen(meta.fetchedAt)+".":"Prijzen van Checkjebon.nl.";
 }
+function renderBrands(){
+  const seen=new Map(); for(const i of list.items) if(i.b) seen.set(norm(i.b),i.b);
+  for(const s of saved) for(const i of s.items) if(i.b) seen.set(norm(i.b),i.b);
+  $("#brandList").innerHTML=[...seen.values()].map(b=>'<option value="'+esc(b)+'"></option>').join("");
+}
+
+/* ---------- labels view ---------- */
+function labelInfo(L){
+  const out={best:null,bestSt:null,missing:[],gone:[],changes:""};
+  for(const st of activeStores()){
+    const key=L.picks[st.id]; if(!key){ out.missing.push(st.name); continue; }
+    const pr=st.byKey.get(key); if(!pr){ out.gone.push(st.name); continue; }
+    if(!out.best||pr.p<out.best.p){ out.best=pr; out.bestSt=st; }
+    out.changes+=chgHTML(st.id,pr,st.name);
+  }
+  return out;
+}
+function renderLabelsView(){
+  const el=$("#viewLabels");
+  if(!labels.length){
+    el.innerHTML='<div class="block empty"><h2>Nog geen vaste producten</h2><p>Maak een product aan en kies per supermarkt welk artikel erbij hoort, ook als elke winkel het anders noemt. Daarna zet je het met één tik op je lijst en vergelijk je altijd precies dezelfde artikelen.</p><button class="btn" id="emptyNewLabel">Nieuw product</button></div>';
+    return;
+  }
+  const f=norm(labelFilter), toks=f?f.split(" "):[];
+  const shown=labels.filter(L=>!toks.length||toks.every(t=>norm(L.name).indexOf(t)>-1));
+  if(!shown.length){ el.innerHTML='<div class="block"><p class="meta">Geen vaste producten gevonden voor “'+esc(labelFilter.trim())+'”.</p></div>'; return; }
+  el.innerHTML='<div class="items" style="margin-top:0">'+shown.map(L=>{
+    let meta="", price="", extra="";
+    if(status==="loading") meta="Prijzen laden…";
+    else if(status==="ready"){
+      const I=labelInfo(L);
+      if(I.best){ meta="Goedkoopst bij "+esc(I.bestSt.name); price=priceHTML(I.best.p,"price-md"); }
+      else meta="Nog bij geen van je winkels gekozen.";
+      if(I.gone.length) extra+='<span class="meta warn">Niet meer gevonden bij '+esc(joinNl(I.gone))+'. Kies een vervanger.</span>';
+      if(I.missing.length&&I.best) extra+='<span class="meta">Niet gekoppeld bij '+esc(joinNl(I.missing))+'</span>';
+      extra+=I.changes;
+    }
+    return '<div class="item"><label class="tick"><input type="checkbox" data-sel="'+esc(L.id)+'"'+(selected.has(L.id)?" checked":"")+' aria-label="'+esc(L.name)+' selecteren"><span aria-hidden="true"></span></label>'
+      +'<button class="item-main" data-lab="'+esc(L.id)+'"><span class="itext"><span class="iname">'+esc(L.name)+'</span>'+(meta?'<span class="meta">'+meta+'</span>':'')+extra+'</span><span>'+price+'</span></button></div>';
+  }).join("")+'</div><p class="status">Vink producten aan om te zien wat ze samen kosten.</p>';
+}
+function renderSelBar(){
+  const bar=$("#selBar");
+  for(const id of [...selected]) if(!labelById(id)) selected.delete(id);
+  const on=view==="labels"&&selected.size>0;
+  bar.hidden=!on; document.body.classList.toggle("hassel",on);
+  if(!on){ bar.innerHTML=""; return; }
+  const items=[...selected].map(id=>({id:"s"+id,lab:id,qty:1,done:false}));
+  let line1=selected.size===1?"1 product geselecteerd":selected.size+" producten geselecteerd", line2="";
+  if(status==="ready"){
+    const C=computeFor(items);
+    if(C.totals.length){
+      const w=C.totals[0];
+      line1+=". Goedkoopst bij "+w.st.name+": "+fmt(w.total)+(w.found<C.n?", "+(C.n-w.found)+" daar niet te koop":"")+".";
+      line2=C.totals.slice(1).map(t=>t.st.name+" "+fmt(t.total)+(t.found<C.n?" (mist "+(C.n-t.found)+")":"")).join(", ");
+    }
+  }
+  bar.innerHTML='<div class="wrap"><p class="sel1">'+esc(line1)+'</p>'+(line2?'<p class="meta" style="margin:0">'+esc(line2)+'</p>':'')+'<div class="actions"><button class="btn" id="selAdd">Op mijn lijst zetten</button><button class="btn secondary" id="selClear">Wissen</button></div></div>';
+}
+
+/* ---------- saved view ---------- */
+function savedSummary(s){
+  if(status!=="ready"||!s.items.length) return "";
+  const C=computeFor(s.items); if(!C.totals.length) return "";
+  const w=C.totals[0];
+  return "Nu goedkoopst bij "+w.st.name+" voor "+fmt(w.total)+(w.found<C.n?", "+(C.n-w.found)+" niet gevonden":"")+".";
+}
+function renderSavedView(){
+  const el=$("#viewSaved");
+  $("#saveListBtn").disabled=!list.items.length;
+  if(!saved.length){
+    el.innerHTML='<div class="block empty"><h2>Nog geen vaste lijsten</h2><p>Bewaar je huidige boodschappenlijst, bijvoorbeeld als weekboodschappen. Later zet je hem met één tik terug of voeg je hem toe aan wat er al op je lijst staat.</p></div>';
+    return;
+  }
+  el.innerHTML='<div class="items" style="margin-top:0">'+saved.map(s=>{
+    const sum=savedSummary(s);
+    return '<button class="item-main" style="padding-left:16px;border-bottom:1px solid var(--rule);width:100%" data-saved="'+esc(s.id)+'"><span class="itext"><span class="iname">'+esc(s.name)+'</span><span class="meta">'+(s.items.length===1?"1 product":s.items.length+" producten")+'</span>'+(sum?'<span class="meta">'+esc(sum)+'</span>':'')+'</span><span></span></button>';
+  }).join("")+'</div>';
+}
+
+/* ---------- view switching ---------- */
+function setView(v){
+  view=v;
+  document.querySelectorAll(".tabs [data-view]").forEach(b=>{ if(b.dataset.view===v) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current"); });
+  $("#viewTitle").textContent=v==="list"?"Boodschappenlijst":v==="labels"?"Mijn producten":"Vaste lijsten";
+  $("#ctlList").hidden=v!=="list"; $("#ctlLabels").hidden=v!=="labels"; $("#ctlSaved").hidden=v!=="saved";
+  $("#viewList").hidden=v!=="list"; $("#viewLabels").hidden=v!=="labels"; $("#viewSaved").hidden=v!=="saved";
+  window.scrollTo(0,0);
+  render();
+}
+document.querySelectorAll(".tabs [data-view]").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+
 function render(){
-  const C=status==="ready"?compute():{rows:list.items.map(it=>({it})),totals:[],n:list.items.length,stores:[]};
-  renderSummary(C); renderItems(C); renderStatus(); renderBrands();
+  if(view==="list"){ const C=status==="ready"?computeFor(list.items):null; renderSummary(C); renderItems(C); renderStatus(); }
+  else if(view==="labels") renderLabelsView();
+  else renderSavedView();
+  renderSelBar(); renderBrands(); renderSuggest();
   if(els.sheet.open) renderSheet();
-  if(els.storesSheet.open) renderStoresSheet();
+  if(els.savedSheet.open) renderSavedSheet();
+  if(els.settings.open) renderSettings();
+  scheduleTrack();
 }
 
 /* ---------- item sheet ---------- */
-const els={sheet:$("#sheet"),sheetInner:$("#sheetInner"),storesSheet:$("#storesSheet"),newItem:$("#newItem"),newBrand:$("#newBrand"),toast:$("#toast")};
-function showDialog(d){ if(d.open) return; if(typeof d.showModal==="function") d.showModal(); else d.setAttribute("open",""); }
-function closeDialog(d){ if(!d.open) return; if(typeof d.close==="function") d.close(); else d.removeAttribute("open"); }
-document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{ if(e.target===d||e.target.closest("[data-close]")) closeDialog(d); }));
-els.sheet.addEventListener("close",()=>{ sheetView=null; pickFilter=""; });
-
-function findItem(id){ return list.items.find(i=>i.id===id); }
+const findItem=id=>list.items.find(i=>i.id===id);
 function openItem(id){ sheetView={type:"item",id}; renderSheet(); showDialog(els.sheet); }
 function renderSheet(){
   if(!sheetView) return;
   const it=findItem(sheetView.id);
   if(!it||!data){ closeDialog(els.sheet); return; }
-  if(sheetView.type==="pick") renderPicker(it,sheetView.store); else renderItemSheet(it);
+  if(sheetView.type==="pick"&&!it.lab) renderPicker(it,sheetView.store);
+  else if(it.lab) renderLabelItemSheet(it);
+  else renderItemSheet(it);
+}
+function qtyHTML(it){ return '<div class="qtyrow"><span class="lbl" id="qtyLbl">Aantal</span><div class="qty" role="group" aria-labelledby="qtyLbl"><button id="qtyMin" aria-label="Minder">−</button><output id="qtyOut">'+it.qty+'</output><button id="qtyPlus" aria-label="Meer">+</button></div></div>'; }
+function storeRowsHTML(found,clickable){
+  return found.map((x,i)=>{
+    const c=x.c, bits=sizeBits(c.pr);
+    const badges=(c.pinned&&!c.lab?'<span class="badge">Door jou gekozen</span>':'')+(!c.pinned&&c.cls===3?'<span class="badge warn">Andere verpakking</span>':'');
+    const d=c.pr.p-found[0].c.pr.p;
+    const right=i===0?'<span class="tag">'+priceHTML(c.pr.p,"price-md")+'</span>':priceHTML(c.pr.p,"price-md")+(d<0.005?'<span class="meta" style="margin-top:4px">Even duur</span>':'<span class="diff" style="margin:4px 0 0">+ '+esc(fmt(d))+'</span>');
+    const inner='<span><span class="sname">'+esc(x.st.name)+badges+'</span><span class="pname">'+esc(c.pr.n)+'</span>'+(bits?'<span class="meta" style="display:block">'+esc(bits)+'</span>':'')+chgHTML(x.st.id,c.pr)+'</span><span class="right">'+right+'</span>';
+    return clickable?'<button class="srow" data-pick="'+esc(x.st.id)+'">'+inner+'</button>':'<div class="srow static">'+inner+'</div>';
+  }).join("");
 }
 function renderItemSheet(it){
   const m=matchItem(fullQ(it)), stores=activeStores();
-  const per=stores.map(st=>({st,c:chosen(it,st,m)}));
-  const found=per.filter(x=>x.c).sort((a,b)=>a.c.pr.p-b.c.pr.p), missing=per.filter(x=>!x.c).map(x=>x.st.name);
+  const per=stores.map(st=>({st,c:chosenFor(it,st)}));
+  const found=per.filter(x=>x.c).sort((a,b)=>a.c.pr.p-b.c.pr.p), missing=per.filter(x=>!x.c).map(x=>x.st);
   let note="";
   if(m.size&&m.base) note="Vergeleken op verpakkingen vanaf "+fmtSize({v:m.size.v,b:m.size.b})+".";
   else if(m.base&&m.med) note="Vergeleken op verpakkingen van rond de "+fmtSize({v:m.med,b:m.base})+". Zet de inhoud erbij, zoals “500 g”, als je een andere maat wilt.";
-  let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(label(it))+'</h2><button class="close" data-close>Sluiten</button></div>'
+  let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(itemName(it))+'</h2><button class="close" data-close>Sluiten</button></div>'
     +'<div class="editgrid"><div><label class="lbl" for="itemBrand">Merk</label><input id="itemBrand" class="txt" value="'+esc(it.b)+'" placeholder="Elk merk" list="brandList" autocomplete="off" autocapitalize="words" enterkeyhint="next"></div>'
-    +'<div><label class="lbl" for="itemName">Product</label><input id="itemName" class="txt" value="'+esc(it.q)+'" autocomplete="off" enterkeyhint="done"></div></div>'
-    +'<div class="qtyrow"><span class="lbl" id="qtyLbl">Aantal</span><div class="qty" role="group" aria-labelledby="qtyLbl"><button id="qtyMin" aria-label="Minder">−</button><output id="qtyOut">'+it.qty+'</output><button id="qtyPlus" aria-label="Meer">+</button></div></div>';
+    +'<div><label class="lbl" for="itemName">Product</label><input id="itemName" class="txt" value="'+esc(it.q)+'" autocomplete="off" enterkeyhint="done"></div></div>'+qtyHTML(it);
   if(note) html+='<p class="note">'+esc(note)+'</p>';
-  if(!found.length) html+='<p class="note">Bij geen van de gekozen winkels gevonden. Probeer een andere of kortere omschrijving.</p>';
-  html+=found.map((x,i)=>{
-    const c=x.c, sz=fmtSize(c.sz), bits=[];
-    if(sz) bits.push(sz);
-    if(c.up!=null&&c.sz) bits.push(fmt(c.up)+" "+perLabel(c.sz.b));
-    const badges=(c.pinned?'<span class="badge">Door jou gekozen</span>':'')+(!c.pinned&&c.cls===3?'<span class="badge warn">Andere verpakking</span>':'');
-    const d=c.pr.p-found[0].c.pr.p;
-    const right=i===0?'<span class="tag">'+priceHTML(c.pr.p,"price-md")+'</span>':priceHTML(c.pr.p,"price-md")+(d<0.005?'<span class="meta" style="margin-top:4px">Even duur</span>':'<span class="diff" style="margin:4px 0 0">+ '+esc(fmt(d))+'</span>');
-    return '<button class="srow" data-pick="'+esc(x.st.id)+'"><span><span class="sname">'+esc(x.st.name)+badges+'</span><span class="pname">'+esc(c.pr.n)+'</span>'+(bits.length?'<span class="meta" style="display:block">'+esc(bits.join(", "))+'</span>':'')+'</span><span class="right">'+right+'</span></button>';
-  }).join("");
-  if(missing.length) html+='<p class="note">Niet gevonden bij '+esc(joinNl(missing))+'.</p>';
-  if(found.length) html+='<p class="hint">Tik op een winkel om een ander product te kiezen.</p>';
+  html+=storeRowsHTML(found,true);
+  html+=missing.map(st=>'<button class="srow" data-pick="'+esc(st.id)+'"><span><span class="sname">'+esc(st.name)+'</span><span class="meta" style="display:block">Niet automatisch gevonden. Tik om zelf het product te kiezen.</span></span><span class="right"></span></button>').join("");
+  html+='<p class="hint">Tik op een winkel om een ander product te kiezen.</p>'
+    +'<div class="actions"><button class="btn secondary" id="toLabel">Opslaan als vast product</button></div>'
+    +'<button class="btn text" id="removeItem">Verwijderen van lijst</button>';
+  els.sheetInner.innerHTML=html;
+}
+function renderLabelItemSheet(it){
+  const L=labelById(it.lab), stores=activeStores();
+  const per=stores.map(st=>({st,c:chosenFor(it,st)}));
+  const found=per.filter(x=>x.c).sort((a,b)=>a.c.pr.p-b.c.pr.p), missing=per.filter(x=>!x.c).map(x=>x.st);
+  let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(itemName(it))+'</h2><button class="close" data-close>Sluiten</button></div>'+qtyHTML(it)
+    +'<p class="note">Dit is een vast product. Je vergelijkt precies de artikelen die je per winkel hebt gekozen.</p>';
+  html+=storeRowsHTML(found,false);
+  html+=missing.map(st=>{ const gone=L&&L.picks[st.id]; return '<div class="srow static"><span><span class="sname">'+esc(st.name)+'</span><span class="meta'+(gone?' warn':'')+'" style="display:block">'+(gone?"Niet meer gevonden. Kies een vervanger.":"Niet gekoppeld.")+'</span></span><span class="right"></span></div>'; }).join("");
+  if(L) html+='<div class="actions"><button class="btn secondary" id="editLabel">Artikelen per winkel aanpassen</button></div>';
   html+='<button class="btn text" id="removeItem">Verwijderen van lijst</button>';
   els.sheetInner.innerHTML=html;
 }
-function joinNl(a){ return a.length<2?a.join(""):a.slice(0,-1).join(", ")+" en "+a[a.length-1]; }
 function renderPicker(it,storeId){
   const st=storeById(storeId); if(!st){ sheetView={type:"item",id:it.id}; renderItemSheet(it); return; }
-  const m=matchItem(fullQ(it)), cur=chosen(it,st,m);
+  const cur=chosenFor(it,st);
   let html='<div class="sheet-head"><h2 id="sheetTitle">'+esc(st.name)+'</h2><button class="close" id="backBtn">Terug</button></div>'
-    +'<p class="note">Kies welk product je bij '+esc(st.name)+' wilt vergelijken voor “'+esc(label(it))+'”.</p>';
+    +'<p class="note">Kies welk product je bij '+esc(st.name)+' wilt vergelijken voor “'+esc(itemName(it))+'”.</p>';
   if(cur&&st.url&&cur.pr.l) html+='<a class="extlink" href="'+esc(st.url+cur.pr.l)+'" target="_blank" rel="noopener">Bekijk het gekozen product op de site</a>';
   if(cur&&cur.pinned) html+='<div><button class="linkbtn" id="unpin">Weer automatisch kiezen</button></div>';
   html+='<div style="margin:10px 0 4px"><input id="pickFilter" class="txt" type="search" placeholder="Zoek bij '+esc(st.name)+'" value="'+esc(pickFilter)+'" autocomplete="off" aria-label="Zoek bij '+esc(st.name)+'"></div><div id="pickList"></div>';
   els.sheetInner.innerHTML=html;
   renderPickList();
 }
+function productRowsHTML(cands,curKey,attr){
+  return cands.map(c=>{
+    const bits=sizeBits(c.pr), isCur=pk(c.pr)===curKey;
+    const meta=[bits,isCur?"gekozen":""].filter(Boolean).join(", ");
+    return '<button class="srow" '+attr+'="'+esc(pk(c.pr))+'" aria-pressed="'+isCur+'"><span><span class="pname" style="font-weight:'+(isCur?600:400)+'">'+esc(c.pr.n)+'</span>'+(meta?'<span class="meta" style="display:block">'+esc(meta)+'</span>':'')+'</span><span class="right">'+priceHTML(c.pr.p,"price-sm")+'</span></button>';
+  }).join("");
+}
+function searchStore(st,term,limit){
+  const toks=norm(term).split(" ").filter(Boolean); if(!toks.length) return {res:[],total:0};
+  const phrase=toks.join(" "), res=[];
+  for(const p of st.products){ if(toks.every(t=>p.k.indexOf(t)>-1)) res.push({pr:p,rel:relevance(p.k,toks,phrase)}); }
+  res.sort((a,b)=>a.rel-b.rel||a.pr.p-b.pr.p);
+  return {res:res.slice(0,limit),total:res.length};
+}
 function renderPickList(){
   const box=$("#pickList"); if(!box||!sheetView) return;
   const it=findItem(sheetView.id), st=storeById(sheetView.store); if(!it||!st) return;
-  const m=matchItem(fullQ(it)), cur=chosen(it,st,m), curKey=cur?pk(cur.pr):null;
+  const m=matchItem(fullQ(it)), cur=chosenFor(it,st), curKey=cur?pk(cur.pr):null;
   let cands;
-  const f=norm(pickFilter);
-  if(f){
-    const toks=f.split(" ");
-    cands=st.products.filter(p=>toks.every(t=>p.k.indexOf(t)>-1)).slice(0,400).map(p=>makeCand(p,m)).sort((a,b)=>a.pr.p-b.pr.p);
-  } else cands=(m.perStore.get(st.id)||[]).slice();
-  cands=cands.slice(0,60);
-  if(!cands.length){ box.innerHTML='<p class="note">Geen producten gevonden. Probeer een ander zoekwoord.</p>'; return; }
-  box.innerHTML=cands.map(c=>{
-    const sz=fmtSize(c.sz), bits=[]; if(sz) bits.push(sz); if(c.up!=null&&c.sz) bits.push(fmt(c.up)+" "+perLabel(c.sz.b));
-    const isCur=pk(c.pr)===curKey;
-    return '<button class="srow" data-choose="'+esc(pk(c.pr))+'" aria-pressed="'+isCur+'"><span><span class="pname" style="font-weight:'+(isCur?600:400)+'">'+esc(c.pr.n)+'</span>'+(bits.length||isCur?'<span class="meta" style="display:block">'+esc(bits.join(", "))+(isCur?(bits.length?", ":"")+"gekozen":"")+'</span>':'')+'</span><span class="right">'+priceHTML(c.pr.p,"price-sm")+'</span></button>';
-  }).join("");
+  if(norm(pickFilter)) cands=searchStore(st,pickFilter,60).res.map(x=>makeCand(x.pr,m));
+  else cands=(m.perStore.get(st.id)||[]).slice(0,60);
+  if(!cands.length){ box.innerHTML='<p class="note">'+(norm(pickFilter)?"Geen producten gevonden. Probeer een ander zoekwoord.":"Hier is niets automatisch gevonden. Zoek hierboven op merk of productnaam.")+'</p>'; return; }
+  box.innerHTML=productRowsHTML(cands,curKey,"data-choose");
 }
 els.sheetInner.addEventListener("click",e=>{
   if(!sheetView) return;
   const it=findItem(sheetView.id); if(!it) return;
   const t=e.target;
-  if(t.closest("#qtyMin")||t.closest("#qtyPlus")){
-    it.qty=Math.max(1,Math.min(99,it.qty+(t.closest("#qtyPlus")?1:-1))); saveList(); render(); return;
+  if(t.closest("#qtyMin")||t.closest("#qtyPlus")){ it.qty=Math.max(1,Math.min(99,it.qty+(t.closest("#qtyPlus")?1:-1))); saveList(); render(); return; }
+  if(t.closest("#removeItem")){ list.items=list.items.filter(i=>i.id!==it.id); saveList(); closeDialog(els.sheet); render(); toast("“"+itemName(it)+"” verwijderd"); return; }
+  if(t.closest("#editLabel")){ openLabelEditor(it.lab); return; }
+  if(t.closest("#toLabel")){
+    commitName();
+    const picks={}; for(const st of activeStores()){ const c=chosenFor(it,st); if(c) picks[st.id]=pk(c.pr); }
+    openLabelEditor(null,{name:itemName(it),picks,fromItem:it.id}); return;
   }
-  if(t.closest("#removeItem")){ list.items=list.items.filter(i=>i.id!==it.id); saveList(); closeDialog(els.sheet); render(); toast("“"+label(it)+"” verwijderd"); return; }
   const pick=t.closest("[data-pick]");
-  if(pick){ commitName(); sheetView={type:"pick",id:it.id,store:pick.dataset.pick}; pickFilter=""; renderSheet(); els.sheetInner.scrollTop=0; return; }
+  if(pick){
+    commitName();
+    const sid=pick.dataset.pick, m=matchItem(fullQ(it)), has=(m.perStore.get(sid)||[]).length>0||!!it.pins[sid];
+    sheetView={type:"pick",id:it.id,store:sid};
+    pickFilter=has?"":(it.b?it.b+" ":"")+(it.q.split(" ")[0]||"");
+    renderSheet(); els.sheetInner.scrollTop=0; return;
+  }
   if(t.closest("#backBtn")){ sheetView={type:"item",id:it.id}; pickFilter=""; renderSheet(); els.sheetInner.scrollTop=0; return; }
   if(t.closest("#unpin")){ delete it.pins[sheetView.store]; saveList(); sheetView={type:"item",id:it.id}; render(); toast("Wordt weer automatisch gekozen"); return; }
   const ch=t.closest("[data-choose]");
-  if(ch){ it.pins[sheetView.store]=ch.dataset.choose; saveList(); sheetView={type:"item",id:it.id}; pickFilter=""; render(); els.sheetInner.scrollTop=0; toast("Product gekozen"); return; }
+  if(ch){ it.pins[sheetView.store]=ch.dataset.choose; saveList(); sheetView={type:"item",id:it.id}; pickFilter=""; render(); els.sheetInner.scrollTop=0; toast("Product gekozen"); }
 });
 els.sheetInner.addEventListener("input",e=>{ if(e.target.id==="pickFilter"){ pickFilter=e.target.value; renderPickList(); } });
 els.sheetInner.addEventListener("change",e=>{ if(e.target.id==="itemName"||e.target.id==="itemBrand") commitName(); });
@@ -570,23 +847,212 @@ els.sheetInner.addEventListener("keydown",e=>{
 });
 function commitName(){
   const inp=$("#itemName"), bi=$("#itemBrand"); if(!inp||!sheetView) return;
-  const it=findItem(sheetView.id); if(!it) return;
-  const v=inp.value.trim().replace(/\s+/g," "), b=bi?bi.value.trim().replace(/\s+/g," "):it.b;
+  const it=findItem(sheetView.id); if(!it||it.lab) return;
+  const v=clean1(inp.value), b=bi?clean1(bi.value):it.b;
   if(!v){ inp.value=it.q; return; }
   if(v===it.q&&b===it.b) return;
   it.q=v; it.b=b; it.pins={}; saveList(); render();
 }
 
-/* ---------- stores sheet ---------- */
-function renderStoresSheet(){
-  const box=$("#storeChips");
-  if(!data){ box.innerHTML='<p class="meta">De winkels verschijnen zodra de prijzen geladen zijn.</p>'; }
-  else box.innerHTML=data.map(s=>'<label class="chipcheck"><input type="checkbox" value="'+esc(s.id)+'"'+(list.on.indexOf(s.id)>-1?" checked":"")+'><span>'+esc(s.name)+'</span></label>').join("");
-  $("#lidlNote").hidden=!(data&&data.some(s=>s.id==="lidl"));
-  $("#dataNote").textContent=refreshing?"Prijzen worden vernieuwd…":meta.fetchedAt?"Prijzen opgehaald "+fmtWhen(meta.fetchedAt)+(meta.updatedAt?", door Checkjebon bijgewerkt "+fmtWhen(meta.updatedAt):"")+". De app haalt ze automatisch opnieuw op als ze ouder zijn dan zes uur.":"";
-  $("#refreshBtn").disabled=refreshing;
+/* ---------- label editor ---------- */
+function openLabelEditor(id,init){
+  const L=id?labelById(id):null;
+  draft={id:L?L.id:null,name:L?L.name:(init&&init.name)||"",picks:Object.assign({},L?L.picks:(init&&init.picks)||{}),term:"",view:"edit",store:null,fromItem:(init&&init.fromItem)||null};
+  renderLabelSheet(); showDialog(els.labelSheet);
+  if(!L&&!draft.name) setTimeout(()=>{ const n=$("#lName"); if(n) n.focus(); },60);
 }
-$("#storeChips").addEventListener("change",e=>{
+function renderLabelSheet(){
+  if(!draft) return;
+  if(draft.view==="search"){ renderLabelSearch(); return; }
+  const rows=activeStores().map(st=>{ const key=draft.picks[st.id]; return {st,key,pr:key?st.byKey.get(key):null}; });
+  const priced=rows.filter(r=>r.pr); let min=null; for(const r of priced) if(min===null||r.pr.p<min) min=r.pr.p;
+  let html='<div class="sheet-head"><h2 id="labelTitle">'+(draft.id?"Product aanpassen":"Nieuw product")+'</h2><button class="close" data-close>Sluiten</button></div>'
+    +'<div class="field"><label class="lbl" for="lName">Naam</label><input id="lName" class="txt" value="'+esc(draft.name)+'" placeholder="Bijvoorbeeld tortilla volkoren large" autocomplete="off" autocapitalize="sentences"></div>'
+    +'<p class="note">Kies per winkel het artikel dat hierbij hoort. Verkoopt een winkel het niet, laat die dan leeg.</p>';
+  if(!data) html+='<p class="note">De prijzen worden nog geladen. Even geduld.</p>';
+  html+=rows.map(r=>{
+    let left, right="";
+    if(r.pr){
+      const bits=sizeBits(r.pr);
+      left='<span class="pname">'+esc(r.pr.n)+'</span>'+(bits?'<span class="meta" style="display:block">'+esc(bits)+'</span>':'')+chgHTML(r.st.id,r.pr);
+      right=(priced.length>1&&r.pr.p===min)?'<span class="tag">'+priceHTML(r.pr.p,"price-md")+'</span>':priceHTML(r.pr.p,"price-md");
+    } else if(r.key) left='<span class="meta warn" style="display:block">Niet meer gevonden. Tik om een vervanger te kiezen.</span>';
+    else left='<span class="meta" style="display:block">Nog niet gekozen. Tik om te zoeken.</span>';
+    return '<button class="srow" data-lstore="'+esc(r.st.id)+'"><span><span class="sname">'+esc(r.st.name)+'</span>'+left+'</span><span class="right">'+right+'</span></button>';
+  }).join("");
+  html+='<p class="err" id="lErr" role="alert"></p><div class="actions"><button class="btn" id="lSave">Opslaan</button><button class="btn secondary" data-close>Annuleren</button></div>';
+  if(draft.id) html+='<button class="btn text" id="lDel">Product verwijderen</button>';
+  els.labelInner.innerHTML=html;
+}
+function renderLabelSearch(){
+  const st=storeById(draft.store); if(!st){ draft.view="edit"; renderLabelSheet(); return; }
+  const term=draft.term||draft.name;
+  let html='<div class="sheet-head"><h2 id="labelTitle">'+esc(st.name)+'</h2><button class="close" id="lBack">Terug</button></div>'
+    +'<p class="note">Zoek het artikel bij '+esc(st.name)+'. Gebruik de naam zoals deze winkel hem noemt, bijvoorbeeld een Engelse of Nederlandse omschrijving.</p>'
+    +'<input id="lSearch" class="txt" type="search" value="'+esc(term)+'" placeholder="Zoek bij '+esc(st.name)+'" autocomplete="off" aria-label="Zoek bij '+esc(st.name)+'">'
+    +'<div id="lResults"></div>';
+  if(draft.picks[st.id]) html+='<button class="btn text" id="lNone">Niet verkrijgbaar bij '+esc(st.name)+'</button>';
+  els.labelInner.innerHTML=html;
+  renderLabelResults();
+}
+function renderLabelResults(){
+  const box=$("#lResults"); if(!box||!draft) return;
+  const st=storeById(draft.store); if(!st) return;
+  const term=($("#lSearch")||{}).value||"";
+  if(!norm(term)){ box.innerHTML='<p class="note">Typ een merk of productnaam.</p>'; return; }
+  const r=searchStore(st,term,80);
+  if(!r.total){ box.innerHTML='<p class="note">Niets gevonden bij '+esc(st.name)+'. Probeer minder of andere woorden.</p>'; return; }
+  box.innerHTML=(r.total>80?'<p class="note">'+r.total+' resultaten. De eerste 80 staan hieronder, typ meer woorden om te verfijnen.</p>':'')
+    +productRowsHTML(r.res.map(x=>labCand(x.pr)),draft.picks[st.id]||null,"data-lpick");
+}
+els.labelInner.addEventListener("input",e=>{
+  if(!draft) return;
+  if(e.target.id==="lName") draft.name=e.target.value;
+  else if(e.target.id==="lSearch"){ draft.term=e.target.value; renderLabelResults(); }
+});
+els.labelInner.addEventListener("click",e=>{
+  if(!draft) return;
+  const t=e.target;
+  const ls=t.closest("[data-lstore]");
+  if(ls){ const n=$("#lName"); if(n) draft.name=n.value; draft.view="search"; draft.store=ls.dataset.lstore; renderLabelSheet(); els.labelInner.scrollTop=0; const s=$("#lSearch"); if(s){ s.focus(); s.select(); } return; }
+  const lp=t.closest("[data-lpick]");
+  if(lp){ draft.picks[draft.store]=lp.dataset.lpick; const s=$("#lSearch"); if(s) draft.term=s.value; draft.view="edit"; renderLabelSheet(); els.labelInner.scrollTop=0; return; }
+  if(t.closest("#lBack")){ const s=$("#lSearch"); if(s) draft.term=s.value; draft.view="edit"; renderLabelSheet(); els.labelInner.scrollTop=0; return; }
+  if(t.closest("#lNone")){ delete draft.picks[draft.store]; draft.view="edit"; renderLabelSheet(); return; }
+  if(t.closest("#lSave")){ saveDraft(); return; }
+  const del=t.closest("#lDel");
+  if(del) arm(del,"Product verwijderen",null,()=>deleteLabel(draft.id));
+});
+els.labelInner.addEventListener("keydown",e=>{ if(e.target.id==="lSearch"&&e.key==="Enter"){ e.preventDefault(); e.target.blur(); } });
+function saveDraft(){
+  const n=$("#lName"); if(n) draft.name=n.value;
+  const name=clean1(draft.name), err=$("#lErr");
+  if(!name){ err.textContent="Geef het product een naam."; if(n) n.focus(); return; }
+  if(!Object.keys(draft.picks).length){ err.textContent="Kies bij minstens één winkel een artikel."; return; }
+  let L=draft.id?labelById(draft.id):null;
+  if(L){ L.name=name; L.picks=Object.assign({},draft.picks); }
+  else{ L={id:rid(),name,picks:Object.assign({},draft.picks)}; labels.push(L); }
+  sortLabels();
+  if(draft.fromItem){ const it=findItem(draft.fromItem); if(it){ list.items[list.items.indexOf(it)]={id:it.id,lab:L.id,q:L.name,qty:it.qty,done:it.done}; } }
+  for(const it of list.items) if(it.lab===L.id) it.q=L.name;
+  const wasNew=!draft.id;
+  saveLabels(); saveList();
+  draft=null; closeDialog(els.labelSheet);
+  render(); trackPrices();
+  toast(wasNew?"Opgeslagen bij Mijn producten":"Product aangepast");
+}
+function deleteLabel(id){
+  const L=labelById(id); if(!L) return;
+  labels=labels.filter(x=>x.id!==id);
+  const conv=it=>it.lab===id?{id:it.id,b:"",q:L.name,qty:it.qty,done:it.done,pins:{}}:it;
+  list.items=list.items.map(conv); for(const s of saved) s.items=s.items.map(conv);
+  selected.delete(id);
+  saveLabels(); saveList(); saveSaved();
+  closeDialog(els.labelSheet); render();
+  toast("“"+L.name+"” verwijderd");
+}
+
+/* ---------- labels view events ---------- */
+$("#newLabelBtn").addEventListener("click",()=>openLabelEditor(null,{name:clean1($("#labelSearch").value)}));
+$("#labelSearch").addEventListener("input",e=>{ labelFilter=e.target.value; renderLabelsView(); });
+$("#viewLabels").addEventListener("click",e=>{
+  if(e.target.closest("#emptyNewLabel")){ openLabelEditor(null); return; }
+  const b=e.target.closest("[data-lab]"); if(b) openLabelEditor(b.dataset.lab);
+});
+$("#viewLabels").addEventListener("change",e=>{
+  const id=e.target.dataset.sel; if(!id) return;
+  if(e.target.checked) selected.add(id); else selected.delete(id);
+  renderSelBar();
+});
+$("#selBar").addEventListener("click",e=>{
+  if(e.target.closest("#selClear")){ selected.clear(); render(); return; }
+  if(e.target.closest("#selAdd")){
+    let added=0, had=0;
+    for(const id of selected){ const L=labelById(id); if(!L) continue; const ex=list.items.find(i=>i.lab===id); if(ex){ ex.done=false; had++; } else { list.items.unshift({id:rid(),lab:id,q:L.name,qty:1,done:false}); added++; } }
+    selected.clear(); saveList(); render();
+    if(!added) toast(had===1?"Dit product stond al op je lijst":"Deze producten stonden al op je lijst");
+    else toast((added===1?"1 product":added+" producten")+" op je lijst gezet"+(had?", "+had+" stond"+(had===1?"":"en")+" er al op":""));
+  }
+});
+
+/* ---------- saved lists ---------- */
+const cloneItems=items=>items.map(i=>cleanItem(Object.assign(JSON.parse(JSON.stringify(i)),{id:rid(),done:false}))).filter(Boolean);
+const itemKey=i=>i.lab?"L:"+i.lab:"F:"+norm(fullQ(i));
+function openSaved(v){ savedView=v; renderSavedSheet(); showDialog(els.savedSheet); if(v.mode==="new") setTimeout(()=>{ const n=$("#sName"); if(n) n.focus(); },60); }
+function renderSavedSheet(){
+  if(!savedView) return;
+  let html;
+  if(savedView.mode==="new"){
+    const n=list.items.length;
+    html='<div class="sheet-head"><h2 id="savedTitle">Lijst bewaren</h2><button class="close" data-close>Sluiten</button></div>'
+      +'<div class="field"><label class="lbl" for="sName">Naam</label><input id="sName" class="txt" placeholder="Bijvoorbeeld weekboodschappen" autocomplete="off" autocapitalize="sentences"></div>'
+      +'<p class="note">Je bewaart de '+(n===1?"1 product":n+" producten")+' die nu op je lijst staan, met de aantallen en je eigen keuzes per winkel.</p>'
+      +'<p class="err" id="sErr" role="alert"></p><div class="actions"><button class="btn" id="sSave">Bewaren</button><button class="btn secondary" data-close>Annuleren</button></div>';
+  } else {
+    const s=saved.find(x=>x.id===savedView.id); if(!s){ closeDialog(els.savedSheet); return; }
+    const sum=savedSummary(s);
+    html='<div class="sheet-head"><h2 id="savedTitle">'+esc(s.name)+'</h2><button class="close" data-close>Sluiten</button></div>'
+      +(sum?'<p class="note">'+esc(sum)+'</p>':'')
+      +'<div class="contents">'+s.items.map(i=>'<div>'+esc((i.qty>1?i.qty+"× ":"")+itemName(i))+'</div>').join("")+'</div>'
+      +'<div class="actions"><button class="btn" id="sReplace">Vervang mijn lijst</button><button class="btn secondary" id="sAdd">Toevoegen</button></div>'
+      +(list.items.length?'<div style="margin-top:6px"><button class="linkbtn" id="sUpdate">Bijwerken met mijn huidige lijst</button></div>':'')
+      +'<button class="btn text" id="sDel">Lijst verwijderen</button>';
+  }
+  els.savedInner.innerHTML=html;
+}
+$("#saveListBtn").addEventListener("click",()=>{ if(list.items.length) openSaved({mode:"new"}); });
+$("#viewSaved").addEventListener("click",e=>{ const b=e.target.closest("[data-saved]"); if(b) openSaved({mode:"open",id:b.dataset.saved}); });
+els.savedInner.addEventListener("keydown",e=>{ if(e.target.id==="sName"&&e.key==="Enter"){ e.preventDefault(); $("#sSave").click(); } });
+els.savedInner.addEventListener("click",e=>{
+  if(!savedView) return;
+  const t=e.target;
+  if(t.closest("#sSave")){
+    const name=clean1($("#sName").value);
+    if(!name){ $("#sErr").textContent="Geef de lijst een naam."; return; }
+    saved.unshift({id:rid(),name,items:cloneItems(list.items),at:Date.now()}); saveSaved();
+    closeDialog(els.savedSheet); render(); toast("“"+name+"” bewaard"); return;
+  }
+  const s=saved.find(x=>x.id===savedView.id); if(!s) return;
+  const rep=t.closest("#sReplace");
+  if(rep){
+    const go=()=>{ list.items=cloneItems(s.items); saveList(); closeDialog(els.savedSheet); setView("list"); toast("“"+s.name+"” staat nu op je lijst"); };
+    if(list.items.length) arm(rep,"Vervang mijn lijst","Tik nogmaals om te vervangen",go); else go();
+    return;
+  }
+  if(t.closest("#sAdd")){
+    for(const i of cloneItems(s.items)){ const ex=list.items.find(x=>itemKey(x)===itemKey(i)); if(ex){ ex.qty=Math.min(99,ex.qty+i.qty); ex.done=false; } else list.items.push(i); }
+    saveList(); closeDialog(els.savedSheet); setView("list"); toast("“"+s.name+"” toegevoegd aan je lijst"); return;
+  }
+  const up=t.closest("#sUpdate");
+  if(up){ arm(up,"Bijwerken met mijn huidige lijst","Tik nogmaals om bij te werken",()=>{ s.items=cloneItems(list.items); s.at=Date.now(); saveSaved(); render(); toast("“"+s.name+"” bijgewerkt"); }); return; }
+  const del=t.closest("#sDel");
+  if(del) arm(del,"Lijst verwijderen",null,()=>{ saved=saved.filter(x=>x.id!==s.id); saveSaved(); closeDialog(els.savedSheet); render(); toast("“"+s.name+"” verwijderd"); });
+});
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  let html='<div class="sheet-head"><h2 id="settingsTitle">Instellingen</h2><button class="close" data-close>Sluiten</button></div>'
+    +'<h3>Winkels</h3><p class="note">Kies maximaal vier supermarkten om te vergelijken.</p><div class="chips" id="storeChips">';
+  html+=data?data.map(s=>'<label class="chipcheck"><input type="checkbox" value="'+esc(s.id)+'"'+(list.on.indexOf(s.id)>-1?" checked":"")+'><span>'+esc(s.name)+'</span></label>').join(""):'<p class="meta">De winkels verschijnen zodra de prijzen geladen zijn.</p>';
+  html+='</div>';
+  if(data&&data.some(s=>s.id==="lidl")&&list.on.indexOf("lidl")>-1) html+='<p class="note">De prijzen van Lidl komen via boodschaapje.nl en zijn minder volledig dan die van de andere winkels.</p>';
+  html+='<h3>Prijzen</h3><p class="note">'+(refreshing?"Prijzen worden vernieuwd…":meta.fetchedAt?"Opgehaald "+fmtWhen(meta.fetchedAt)+(meta.updatedAt?", door Checkjebon bijgewerkt "+fmtWhen(meta.updatedAt):"")+". De app haalt ze automatisch opnieuw op als ze ouder zijn dan zes uur. Gedaalde en gestegen prijzen van je producten zie je twee weken lang.":"")+'</p>'
+    +'<button class="btn secondary" id="refreshBtn"'+(refreshing?" disabled":"")+'>Prijzen nu vernieuwen</button>'
+    +'<h3>Back-up</h3><p class="note">Bewaar je vaste producten, vaste lijsten en boodschappenlijst in een bestand. Zo raak je niets kwijt als je je browsergegevens wist of een nieuwe telefoon neemt.</p>'
+    +'<div class="actions" style="margin-top:8px"><button class="btn secondary" id="backupBtn">Back-up maken</button><button class="btn secondary" id="restoreBtn">Terugzetten</button></div><div id="restoreBox"></div>';
+  els.settingsInner.innerHTML=html;
+  renderRestoreBox();
+}
+function renderRestoreBox(){
+  const box=$("#restoreBox"); if(!box) return;
+  if(!pendingRestore){ box.innerHTML=""; return; }
+  if(pendingRestore.error){ box.innerHTML='<div class="restore"><p class="err" style="margin:0">'+esc(pendingRestore.error)+'</p></div>'; return; }
+  const r=pendingRestore, when=r.exported&&Date.parse(r.exported)?" van "+fmtWhen(Date.parse(r.exported)):"";
+  box.innerHTML='<div class="restore"><p>Back-up'+esc(when)+' met '+r.labels.length+' vaste producten, '+r.saved.length+' vaste lijsten en '+r.items.length+' producten op je lijst. Je huidige gegevens worden hierdoor vervangen.</p><div class="actions"><button class="btn" id="doRestore">Terugzetten</button><button class="btn secondary" id="cancelRestore">Annuleren</button></div></div>';
+}
+$("#settingsBtn").addEventListener("click",()=>{ pendingRestore=null; renderSettings(); showDialog(els.settings); });
+els.settingsInner.addEventListener("change",e=>{
+  if(!e.target.closest("#storeChips")) return;
   const id=e.target.value; if(!id) return;
   if(e.target.checked){
     if(list.on.length>=MAX_STORES){ e.target.checked=false; toast("Je kunt maximaal vier winkels kiezen. Zet er eerst een uit."); return; }
@@ -597,35 +1063,93 @@ $("#storeChips").addEventListener("change",e=>{
   }
   saveList(); render();
 });
-$("#storesBtn").addEventListener("click",()=>{ renderStoresSheet(); showDialog(els.storesSheet); });
-$("#refreshBtn").addEventListener("click",()=>{ fetchFresh(!data,true); });
+els.settingsInner.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.closest("#refreshBtn")){ fetchFresh(!data,true); return; }
+  if(t.closest("#backupBtn")){ exportBackup(); return; }
+  if(t.closest("#restoreBtn")){ const f=$("#restoreFile"); f.value=""; f.click(); return; }
+  if(t.closest("#cancelRestore")){ pendingRestore=null; renderRestoreBox(); return; }
+  if(t.closest("#doRestore")&&pendingRestore&&!pendingRestore.error){
+    const r=pendingRestore;
+    labels=r.labels; sortLabels(); saved=r.saved; list.items=r.items; if(r.on) list.on=r.on;
+    saveLabels(); saveSaved(); saveList(); selected.clear(); pendingRestore=null;
+    closeDialog(els.settings); render(); trackPrices(); toast("Back-up teruggezet");
+  }
+});
+async function exportBackup(){
+  const obj={app:"boodschappenlijst",version:1,exported:new Date().toISOString(),labels,saved,items:list.items,on:list.on};
+  const text=JSON.stringify(obj), name="boodschappen-backup-"+today()+".json";
+  try{
+    if(typeof File==="function"&&navigator.canShare){
+      const file=new File([text],name,{type:"application/json"});
+      if(navigator.canShare({files:[file]})){ await navigator.share({files:[file],title:"Back-up boodschappenlijst"}); toast("Back-up gemaakt"); return; }
+    }
+  }catch(err){ if(err&&err.name==="AbortError") return; }
+  try{
+    const url=URL.createObjectURL(new Blob([text],{type:"application/json"}));
+    const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    toast("Back-up gedownload");
+  }catch(err){ toast("De back-up kon niet worden gemaakt."); }
+}
+$("#restoreFile").addEventListener("change",async e=>{
+  const f=e.target.files&&e.target.files[0]; if(!f) return;
+  try{
+    const o=JSON.parse(await f.text());
+    if(!o||o.app!=="boodschappenlijst") throw new Error("x");
+    pendingRestore={labels:(Array.isArray(o.labels)?o.labels:[]).map(cleanLabel).filter(Boolean),saved:(Array.isArray(o.saved)?o.saved:[]).map(cleanSaved).filter(Boolean),items:(Array.isArray(o.items)?o.items:[]).map(cleanItem).filter(Boolean),on:Array.isArray(o.on)&&o.on.length?o.on.slice(0,MAX_STORES):null,exported:o.exported};
+  }catch(err){ pendingRestore={error:"Dit bestand is geen back-up van deze app."}; }
+  renderRestoreBox();
+});
 
-/* ---------- main events ---------- */
+/* ---------- list events ---------- */
 function addItem(b,q){
-  b=String(b||"").trim().replace(/\s+/g," "); q=String(q||"").trim().replace(/\s+/g," ");
-  if(!q) return false;
-  const key=norm((b?b+" ":"")+q);
-  const ex=list.items.find(i=>norm(fullQ(i))===key);
+  b=clean1(b); q=clean1(q); if(!q) return false;
+  if(!b){ const L=labels.find(x=>norm(x.name)===norm(q)); if(L) return addLabelItem(L.id); }
+  const key="F:"+norm((b?b+" ":"")+q);
+  const ex=list.items.find(i=>itemKey(i)===key);
   if(ex){ ex.qty=Math.min(99,ex.qty+1); ex.done=false; toast("Aantal verhoogd naar "+ex.qty); }
   else list.items.unshift({id:rid(),b,q,qty:1,done:false,pins:{}});
   saveList(); render(); return true;
 }
-function addFromInputs(){
-  if(!els.newItem.value.trim()){ toast(els.newBrand.value.trim()?"Vul ook het product in":"Vul een product in"); els.newItem.focus(); return; }
-  addItem(els.newBrand.value,els.newItem.value);
-  els.newBrand.value=""; els.newItem.value=""; els.newBrand.focus();
+function addLabelItem(id){
+  const L=labelById(id); if(!L) return false;
+  const ex=list.items.find(i=>i.lab===id);
+  if(ex){ ex.qty=Math.min(99,ex.qty+1); ex.done=false; toast("Aantal verhoogd naar "+ex.qty); }
+  else list.items.unshift({id:rid(),lab:id,q:L.name,qty:1,done:false});
+  saveList(); render(); return true;
 }
-function renderBrands(){
-  const seen=new Map(); for(const i of list.items) if(i.b) seen.set(norm(i.b),i.b);
-  $("#brandList").innerHTML=[...seen.values()].map(b=>'<option value="'+esc(b)+'"></option>').join("");
+function clearInputs(){ els.newBrand.value=""; els.newItem.value=""; renderSuggest(); }
+function addFromInputs(){
+  if(!clean1(els.newItem.value)){ toast(clean1(els.newBrand.value)?"Vul ook het product in":"Vul een product in"); els.newItem.focus(); return; }
+  addItem(els.newBrand.value,els.newItem.value); clearInputs(); els.newBrand.focus();
+}
+let sugHide;
+function renderSuggest(){
+  const box=$("#suggest");
+  const q=norm(clean1(els.newBrand.value)+" "+clean1(els.newItem.value));
+  if(view!=="list"||q.length<2||!labels.length||document.activeElement!==els.newItem&&document.activeElement!==els.newBrand){ box.hidden=true; box.innerHTML=""; return; }
+  const toks=q.split(" ");
+  const hits=labels.filter(L=>{ const k=norm(L.name); return toks.every(t=>k.indexOf(t)>-1); }).slice(0,5);
+  if(!hits.length){ box.hidden=true; box.innerHTML=""; return; }
+  box.innerHTML=hits.map(L=>'<button class="sug" data-sug="'+esc(L.id)+'"><span>'+esc(L.name)+'</span><span class="badge">Mijn product</span></button>').join("");
+  box.hidden=false;
 }
 $("#addBtn").addEventListener("click",addFromInputs);
+for(const inp of [els.newBrand,els.newItem]){
+  inp.addEventListener("input",renderSuggest);
+  inp.addEventListener("focus",()=>{ clearTimeout(sugHide); renderSuggest(); });
+  inp.addEventListener("blur",()=>{ sugHide=setTimeout(renderSuggest,200); });
+}
+$("#suggest").addEventListener("mousedown",e=>e.preventDefault());
+$("#suggest").addEventListener("click",e=>{ const b=e.target.closest("[data-sug]"); if(!b) return; addLabelItem(b.dataset.sug); clearInputs(); els.newItem.focus(); });
 els.newBrand.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); els.newItem.focus(); } });
 els.newItem.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); addFromInputs(); } });
 $("#summary").addEventListener("click",e=>{
   const ex=e.target.closest("[data-eq]"); if(ex){ addItem(ex.dataset.eb,ex.dataset.eq); return; }
   if(e.target.closest("#moreBtn")){ showAll=!showAll; render(); return; }
-  if(e.target.closest("#retryBtn")){ fetchFresh(true,false); }
+  if(e.target.closest("#pairBtn")){ showPair=!showPair; render(); return; }
+  if(e.target.closest("#retryBtn")) fetchFresh(true,false);
 });
 $("#items").addEventListener("click",e=>{
   const o=e.target.closest("[data-open]"); if(o){ openItem(o.dataset.open); return; }
@@ -636,9 +1160,6 @@ $("#items").addEventListener("change",e=>{
   const it=findItem(id); if(it){ it.done=e.target.checked; saveList(); render(); }
 });
 
-let toastT;
-function toast(msg){ els.toast.textContent=msg; els.toast.classList.add("show"); clearTimeout(toastT); toastT=setTimeout(()=>els.toast.classList.remove("show"),2600); }
-
 /* ---------- loading data ---------- */
 function ingest(json){
   if(!Array.isArray(json)) throw new Error("Onverwacht formaat");
@@ -647,12 +1168,12 @@ function ingest(json){
     if(!s||!Array.isArray(s.d)||!s.d.length) continue;
     const id=String(s.n||"").toLowerCase(); if(!id) continue;
     const products=[];
-    for(const x of s.d){ const p=Number(x.p); if(!x||!x.n||!(p>0)) continue; products.push({n:String(x.n),k:norm(x.n),p,s:x.s?String(x.s):"",l:x.l?String(x.l):""}); }
-    if(products.length) stores.push({id,name:STORE_NAMES[id]||String(s.c||id).replace(/\s*\(.*\)$/,""),url:typeof s.u==="string"?s.u:"",products});
+    for(const x of s.d){ const p=Number(x&&x.p); if(!x||!x.n||!(p>0)) continue; products.push({n:String(x.n),k:norm(x.n),p,s:x.s?String(x.s):"",l:x.l?String(x.l):""}); }
+    if(products.length){ const byKey=new Map(); for(const p of products) byKey.set(pk(p),p); stores.push({id,name:STORE_NAMES[id]||String(s.c||id).replace(/\s*\(.*\)$/,""),url:typeof s.u==="string"?s.u:"",products,byKey}); }
   }
   if(!stores.length) throw new Error("Geen winkels");
   stores.sort((a,b)=>a.name.localeCompare(b.name,"nl"));
-  data=stores; status="ready"; matchCache.clear(); pinCache.clear();
+  data=stores; status="ready"; matchCache.clear();
 }
 async function readWithProgress(res){
   if(!res.body||!res.body.getReader) return res.text();
@@ -669,15 +1190,15 @@ async function fetchUpdatedAt(){
   try{
     const r=await fetch(COMMITS_URL,{headers:{Accept:"application/vnd.github+json"}});
     if(!r.ok) return;
-    const j=await r.json(); const d=j&&j[0]&&j[0].commit&&(j[0].commit.committer||j[0].commit.author);
-    const ts=d&&Date.parse(d.date); if(ts){ meta.updatedAt=ts; saveMeta(); renderStatus(); if(els.storesSheet.open) renderStoresSheet(); }
+    const j=await r.json(), d=j&&j[0]&&j[0].commit&&(j[0].commit.committer||j[0].commit.author), ts=d&&Date.parse(d.date);
+    if(ts){ meta.updatedAt=ts; saveMeta(); if(view==="list") renderStatus(); if(els.settings.open) renderSettings(); }
   }catch(e){}
 }
 async function fetchFresh(foreground,manual){
   if(refreshing) return;
   refreshing=true; loadedBytes=0;
   if(foreground){ status="loading"; render(); }
-  if(els.storesSheet.open) renderStoresSheet();
+  if(els.settings.open) renderSettings();
   try{
     const res=await fetch(DATA_URL,{cache:"no-cache"});
     if(!res.ok) throw new Error("HTTP "+res.status);
@@ -685,9 +1206,14 @@ async function fetchFresh(foreground,manual){
     ingest(JSON.parse(text));
     meta.fetchedAt=Date.now(); saveMeta();
     if("caches" in window){ try{ const c=await caches.open(CACHE_NAME); await c.put(DATA_URL,new Response(text,{headers:{"content-type":"application/json"}})); }catch(e){} }
-    refreshing=false; render();
+    refreshing=false;
+    const ch=trackPrices();
+    render();
     fetchUpdatedAt();
-    if(!foreground||manual) toast("Prijzen bijgewerkt");
+    if(ch.down||ch.up){
+      const parts=[]; if(ch.down) parts.push(ch.down===1?"1 prijs gedaald":ch.down+" prijzen gedaald"); if(ch.up) parts.push(ch.up===1?"1 prijs gestegen":ch.up+" prijzen gestegen");
+      toast("Sinds de vorige keer: "+parts.join(" en ")+".");
+    } else if(!foreground||manual) toast("Prijzen bijgewerkt");
   }catch(e){
     refreshing=false;
     if(!data){ status="error"; render(); }
@@ -700,7 +1226,7 @@ async function loadData(){
   if("caches" in window){
     try{
       const c=await caches.open(CACHE_NAME), r=await c.match(DATA_URL);
-      if(r){ ingest(JSON.parse(await r.text())); ok=true; render(); }
+      if(r){ ingest(JSON.parse(await r.text())); ok=true; trackPrices(); render(); }
     }catch(e){ ok=false; }
   }
   if(!ok) await fetchFresh(true,false);
